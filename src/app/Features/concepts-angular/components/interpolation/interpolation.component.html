@@ -1,0 +1,25 @@
+<p>interpolation: {{ name }}</p>
+
+<p>Property Binding:</p>
+<input [value]="name" aria-label="Name" />
+<img [src]="photo" alt="img" [style.border-radius]="'50%'" />
+
+<p>Attribute Binding:</p>
+<input [attr.placeholder]="message" aria-label="Name" />
+
+<p>style binding:</p>
+<nav [style.background-color]="expression" aria-labelledby="example">test 1</nav>
+<nav [style.background-color]="'#FFF0807'" aria-labelledby="example">test 2</nav>
+<nav [style.font-size.rem]="1" aria-labelledby="example">test3</nav>
+
+<nav [style]="navStyle" aria-labelledby="example">
+  <a [style.text-decoration]="activeLinkStyle">Home Page</a>
+  <a [style.text-decoration]="linkStyle">Login</a>
+</nav>
+
+event binding:
+<button type="button" (click)="handlerAlert()" clickable>click with</button>
+
+reference variables:
+<input #valueLog type="text" aria-label="valueLog" />
+<button (click)="logValue(valueLog.value)">click-me</button>
