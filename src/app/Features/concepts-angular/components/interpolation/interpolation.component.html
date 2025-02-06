@@ -18,8 +18,38 @@
 </nav>
 
 event binding:
-<button type="button" (click)="handlerAlert()" clickable>click with</button>
+<button type="button" mat-raised-button color="accent" (click)="handlerAlert()" clickable>
+  <mat-icon class="mat-18">health_and_safety</mat-icon>
+  click with
+</button>
 
 reference variables:
 <input #valueLog type="text" aria-label="valueLog" />
-<button (click)="logValue(valueLog.value)">click-me</button>
+<button mat-raised-button mat-raised-button color="warn" (click)="logValue(valueLog.value)">
+  <mat-icon class="mat-18">thumb_up</mat-icon>
+  click-me
+</button>
+
+button icon:
+<button mat-raised-button color="primary" aria-label="enviar">
+  <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="favorite">favorite</mat-icon>
+  Basic
+</button>
+
+<br />
+
+<mat-card class="example-card">
+  <mat-card-content>
+    <h2 class="example-h2">Exemplo de Spinner Controlado por Botão</h2>
+    <section class="example-section">
+      <div *ngIf="!buttonClicked">
+        <mat-progress-spinner class="example-margin" [mode]="'indeterminate'"> </mat-progress-spinner>
+        <p class="example-margin">Espere o click</p>
+      </div>
+      <div *ngIf="buttonClicked">
+        <h3 class="example-margin">Botão clicado</h3>
+      </div>
+    </section>
+    <button mat-raised-button color="primary" (click)="onButtonClick()">Clique Aqui</button>
+  </mat-card-content>
+</mat-card>
