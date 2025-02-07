@@ -18,4 +18,8 @@ export class ConceptsComponent {
   onButtonClicked(message: string): void {
     this.messageEventOutPut = message;
   }
+
+  clickedVoidEvent(): void {
+    window.alert('event emmit void');
+  }
 }

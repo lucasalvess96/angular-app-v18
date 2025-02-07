@@ -12,7 +12,13 @@ export class ComponentInteractionComponent {
 
   @Output() alertMessage = new EventEmitter<string>();
 
+  @Output() clickedVoid = new EventEmitter<void>();
+
   submitEvent(): void {
     this.alertMessage.emit('button clicked');
+  }
+
+  submitEventVoid(): void {
+    this.clickedVoid.emit();
   }
 }
