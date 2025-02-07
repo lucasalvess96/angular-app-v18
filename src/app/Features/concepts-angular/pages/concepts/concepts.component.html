@@ -6,3 +6,6 @@
 
 <h2>Forms of interaction between template and component</h2>
 <app-interpolation />
+
+<app-component-interaction [information]="information" (alertMessage)="onButtonClicked($event)" />
+<p>{{ messageEventOutPut }}</p>
