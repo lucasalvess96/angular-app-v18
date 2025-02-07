@@ -1,9 +1,14 @@
+import { NgIf } from '@angular/common';
 import { Component } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-interpolation',
   standalone: true,
-  imports: [],
+  imports: [MatButtonModule, MatCardModule, MatProgressSpinnerModule, MatIconModule, NgIf],
   templateUrl: './interpolation.component.html',
   styleUrl: './interpolation.component.scss',
 })
@@ -16,6 +21,7 @@ export class InterpolationComponent {
   navStyle = 'font-size: 1.2rem; color: cornflowerblue;';
   linkStyle = 'underline';
   activeLinkStyle = 'overline';
+  buttonClicked = false;
 
   handlerAlert(): void {
     window.alert('Event binding');
@@ -23,5 +29,9 @@ export class InterpolationComponent {
 
   logValue(valueMessage: string): void {
     window.alert(`${valueMessage}`);
+  }
+
+  onButtonClick(): void {
+    this.buttonClicked = true;
   }
 }
