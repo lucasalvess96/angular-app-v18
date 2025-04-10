@@ -12,7 +12,6 @@ import { InterpolationComponent } from '../../components/interpolation/interpola
 })
 export class ConceptsComponent {
   information = 'component-interaction works!';
-
   messageEventOutPut = 'Loading message';
 
   onButtonClicked(message: string): void {
