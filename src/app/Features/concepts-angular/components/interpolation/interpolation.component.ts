@@ -1,14 +1,11 @@
 import { NgIf } from '@angular/common';
 import { Component, signal } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { materialModules } from '../../../../shared/angular-material/material-modules';
 
 @Component({
   selector: 'app-interpolation',
   standalone: true,
-  imports: [MatButtonModule, MatCardModule, MatProgressSpinnerModule, MatIconModule, NgIf],
+  imports: [materialModules, NgIf],
   templateUrl: './interpolation.component.html',
   styleUrl: './interpolation.component.scss',
 })
