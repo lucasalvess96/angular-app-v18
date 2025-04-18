@@ -3,17 +3,17 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: 'welcome',
-    loadComponent: () => import('./Features/welcome/pages/welcome/welcome.component').then((c) => c.WelcomeComponent),
+    loadComponent: () => import('./features/welcome/pages/welcome/welcome.component').then((c) => c.WelcomeComponent),
   },
   {
     path: 'angular-concepts',
     loadComponent: () =>
-      import('./Features/concepts-angular/pages/concepts/concepts.component').then((c) => c.ConceptsComponent),
+      import('./features/concepts-angular/pages/concepts/concepts.component').then((c) => c.ConceptsComponent),
   },
   {
     path: 'redirect-page',
     loadComponent: () =>
-      import('./Features/page-redirect/pages/page-redirect/page-redirect.component').then(
+      import('./features/page-redirect/pages/page-redirect/page-redirect.component').then(
         (c) => c.PageRedirectComponent,
       ),
   },
@@ -21,7 +21,7 @@ export const routes: Routes = [
   {
     path: '**',
     loadComponent: () =>
-      import('./Features/page-not-found/pages/page-not-found/page-not-found.component').then(
+      import('./features/page-not-found/pages/page-not-found/page-not-found.component').then(
         (c) => c.PageNotFoundComponent,
       ),
   },
