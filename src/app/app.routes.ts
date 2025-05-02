@@ -11,6 +11,11 @@ export const routes: Routes = [
       import('./features/concepts-angular/pages/concepts/concepts.component').then((c) => c.ConceptsComponent),
   },
   {
+    path: 'cozinhas',
+    loadComponent: () =>
+      import('./features/cozinha/pages/cozinhas/cozinhas.component').then((c) => c.CozinhasComponent),
+  },
+  {
     path: 'redirect-page',
     loadComponent: () =>
       import('./features/page-redirect/pages/page-redirect/page-redirect.component').then(
