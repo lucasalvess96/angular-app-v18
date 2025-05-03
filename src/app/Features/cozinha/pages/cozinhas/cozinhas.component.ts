@@ -5,16 +5,12 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { Observable, tap } from 'rxjs';
+import { BehaviorSubject, map, Observable, switchMap, tap } from 'rxjs';
 import { materialModules } from '../../../../shared/angular-material/material-modules';
 import { SpinnerComponentComponent } from '../../../../shared/components/spinner-component/spinner-component.component';
 import { TableComponentComponent } from '../../../../shared/components/table-component/table-component.component';
-import {
-  PAGINATION_DEFAULT_ITEMS_PER_PAGE_OPTIONS,
-  PAGINATION_DEFAULT_PAGE,
-  PAGINATION_DEFAULT_SIZE,
-} from '../../../../shared/constants/pagination';
-import { PaginationControl, SortOrder } from '../../models/controlePaginacao';
+import { getDefaultPaginationControl } from '../../../../shared/constants/pagination';
+import { SortOrder } from '../../models/controlePaginacao';
 import { Cozinha } from '../../models/cozinha';
 import { Paginacao } from '../../models/paginacao';
 import { CozinhaService } from '../../services/cozinha.service';
@@ -37,12 +33,13 @@ export class CozinhasComponent implements OnInit {
   columnHeaders: { [key: string]: string } = { id: 'ID', nome: 'Nome' };
   displayedColumns: string[] = ['id', 'nome'];
   dataSource!: MatTableDataSource<Cozinha>;
-  dataSource$!: Observable<Paginacao>;
+  dataSource$!: Observable<Cozinha[]>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  paginationControl = this.getDefaultPaginationControl();
+  paginationControl = getDefaultPaginationControl();
+  paginationChange$ = new BehaviorSubject<void>(undefined);
 
   loading: boolean = false;
 
@@ -52,53 +49,58 @@ export class CozinhasComponent implements OnInit {
     this.dataSource = new MatTableDataSource<Cozinha>([]);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+
     this.list();
   }
 
-  list(): void {
-    this.loading = true;
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
 
+  list(): void {
+    this.dataSource$ = this.paginationChange$.pipe(
+      switchMap(() => this.cozinhaService.list(this.buildPaginationParams())),
+      tap((response: Paginacao) => {
+        this.paginationControl = {
+          ...this.paginationControl,
+          totalElements: response.totalElements,
+        };
+      }),
+      map((response: Paginacao) => response.content),
+    );
+  }
+
+  filter(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
+  onPageChange(event: PageEvent): void {
+    this.paginationControl.page = event.pageIndex;
+    this.paginationControl.size = event.pageSize;
+    this.paginationChange$.next();
+  }
+
+  onSortChange(sort: Sort): void {
+    this.paginationControl.sortProperty = sort.active;
+    this.paginationControl.sortOrder = sort.direction as SortOrder;
+    this.paginationChange$.next();
+  }
+
+  private buildPaginationParams(): HttpParams {
     const { page, size, sortProperty, sortOrder } = this.paginationControl;
+
     let params = new HttpParams().set('size', size.toString()).set('page', page.toString());
 
     if (sortProperty) {
       params = params.set('sort', `${sortProperty},${sortOrder}`);
     }
 
-    this.cozinhaService
-      .list(params)
-      .pipe(
-        tap({
-          next: (response: Paginacao) => {
-            this.loading = false;
-            this.dataSource.data = response.content;
-            this.paginationControl = {
-              ...this.paginationControl,
-              totalElements: response.totalElements,
-            };
-          },
-        }),
-      )
-      .subscribe();
-  }
-
-  onPageChange(event: PageEvent): void {
-    this.paginationControl.page = event.pageIndex;
-    this.paginationControl.size = event.pageSize;
-    this.list();
-  }
-
-  onSortChange(sort: Sort): void {
-    this.paginationControl.sortProperty = sort.active;
-    this.paginationControl.sortOrder = sort.direction as SortOrder;
-    this.list();
-  }
-
-  private getDefaultPaginationControl(): PaginationControl {
-    return {
-      itemsPerPageOptions: PAGINATION_DEFAULT_ITEMS_PER_PAGE_OPTIONS,
-      size: PAGINATION_DEFAULT_SIZE,
-      page: PAGINATION_DEFAULT_PAGE,
-    } as PaginationControl;
+    return params;
   }
 }
