@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { HttpParams } from '@angular/common/http';
 import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { BehaviorSubject, map, Observable, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, debounceTime, distinctUntilChanged, map, Observable, of, switchMap, tap } from 'rxjs';
 import { materialModules } from '../../../../shared/angular-material/material-modules';
 import { SpinnerComponentComponent } from '../../../../shared/components/spinner-component/spinner-component.component';
 import { TableComponentComponent } from '../../../../shared/components/table-component/table-component.component';
@@ -23,6 +24,7 @@ import { CozinhaService } from '../../services/cozinha.service';
     RouterLinkActive,
     materialModules,
     CommonModule,
+    ReactiveFormsModule,
     TableComponentComponent,
     SpinnerComponentComponent,
   ],
@@ -41,6 +43,8 @@ export class CozinhasComponent implements OnInit {
   paginationControl = getDefaultPaginationControl();
   paginationChange$ = new BehaviorSubject<void>(undefined);
 
+  searchControl = new FormControl('');
+
   loading: boolean = false;
 
   private readonly cozinhaService = inject(CozinhaService);
@@ -51,11 +55,7 @@ export class CozinhasComponent implements OnInit {
     this.dataSource.sort = this.sort;
 
     this.list();
-  }
-
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this.filter();
   }
 
   list(): void {
@@ -71,13 +71,22 @@ export class CozinhasComponent implements OnInit {
     );
   }
 
-  filter(event: Event): void {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  filter(): void {
+    this.searchControl.valueChanges
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+        switchMap((term) => {
+          if (!term || term.trim() === '') {
+            return this.dataSource$;
+          }
 
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
+          return this.cozinhaService.search(term);
+        }),
+      )
+      .subscribe((result: Cozinha[]) => {
+        this.dataSource$ = of(result);
+      });
   }
 
   onPageChange(event: PageEvent): void {
