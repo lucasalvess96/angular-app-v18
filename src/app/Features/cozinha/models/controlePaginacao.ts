@@ -2,7 +2,7 @@ export interface PaginationControl {
   itemsPerPageOptions?: number[];
   size: number;
   page: number;
-  totalElements?: number;
+  totalElements: number;
   sortProperty?: string;
   sortOrder?: SortOrder;
 }
