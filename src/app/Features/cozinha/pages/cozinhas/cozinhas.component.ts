@@ -83,7 +83,6 @@ export class CozinhasComponent implements OnInit {
   }
 
   onPageChange(event: PageEvent): void {
-    console.log(event);
     this.paginationControl.page = event.pageIndex;
     this.paginationControl.size = event.pageSize;
     this.list();
