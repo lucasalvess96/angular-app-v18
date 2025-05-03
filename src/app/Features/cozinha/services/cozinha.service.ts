@@ -1,6 +1,7 @@
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { catchError, Observable, retry } from 'rxjs';
+import { Cozinha } from '../models/cozinha';
 import { Paginacao } from '../models/paginacao';
 
 @Injectable({
@@ -14,6 +15,12 @@ export class CozinhaService {
   list(params: HttpParams): Observable<Paginacao> {
     return this.httpClient
       .get<Paginacao>(`${this.baseUrl}/pagination`, { params })
+      .pipe(retry(2), catchError(this.handleError));
+  }
+
+  search(name: string): Observable<Cozinha[]> {
+    return this.httpClient
+      .get<Cozinha[]>(`${this.baseUrl}/search?nome=${name}`)
       .pipe(retry(2), catchError(this.handleError));
   }
 
