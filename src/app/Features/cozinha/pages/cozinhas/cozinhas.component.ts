@@ -18,12 +18,6 @@ export const PAGINATION_DEFAULT_ITEMS_PER_PAGE_OPTIONS = [5, 10, 20, 50, 100];
 export const PAGINATION_DEFAULT_SIZE = 10;
 export const PAGINATION_DEFAULT_PAGE = 0;
 
-export const getNumbersLimitedToTotal = ({ numbers, total }: { numbers: number[]; total: number }): number[] => {
-  const numbersLowerThanTotal = numbers.filter((option) => option < total);
-
-  return [...numbersLowerThanTotal, total];
-};
-
 @Component({
   selector: 'app-cozinhas',
   standalone: true,
@@ -40,19 +34,18 @@ export class CozinhasComponent implements OnInit {
   @ViewChild(MatSort) sort!: MatSort;
 
   color: ThemePalette = 'primary';
-
   mode: ProgressSpinnerMode = 'indeterminate';
-
   value: number = 50;
-
   loading: boolean = false;
 
   paginationControl = this.getDefaultPaginationControl();
 
-  itemsPerPageOptions?: number[] = PAGINATION_DEFAULT_ITEMS_PER_PAGE_OPTIONS;
   private readonly cozinhaService = inject(CozinhaService);
 
   ngOnInit(): void {
+    this.dataSource = new MatTableDataSource<Cozinha>([]);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
     this.list();
   }
 
@@ -72,40 +65,18 @@ export class CozinhasComponent implements OnInit {
         tap({
           next: (response: Paginacao) => {
             this.loading = false;
-            if (!this.dataSource) {
-              this.dataSource = new MatTableDataSource<Cozinha>([]);
-            }
-
             this.dataSource.data = response.content;
-            this.dataSource.paginator = this.paginator;
-            this.dataSource.sort = this.sort;
             this.paginationControl = {
               ...this.paginationControl,
               totalElements: response.totalElements,
             };
-            this.itemsPerPageOptions = getNumbersLimitedToTotal({
-              numbers: this.itemsPerPageOptions ?? [],
-              total: response.totalElements,
-            });
           },
         }),
       )
       .subscribe();
   }
 
-  applyFilter(event: Event) {
-    this.loading = true;
-
-    const filterValue = (event.target as HTMLInputElement).value;
-
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
-  }
-
-  onPageChange(event: PageEvent) {
+  onPageChange(event: PageEvent): void {
     console.log(event);
     this.paginationControl.page = event.pageIndex;
     this.paginationControl.size = event.pageSize;

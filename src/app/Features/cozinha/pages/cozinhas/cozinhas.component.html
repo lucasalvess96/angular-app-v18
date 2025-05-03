@@ -1,47 +1,54 @@
-<nav>
-  <ul>
-    <li><a routerLink="../welcome" routerLinkActive="active" ariaCurrentWhenActive="page">Home</a></li>
-  </ul>
-</nav>
-
-<mat-form-field>
-  <mat-label>Filter</mat-label>
-  <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input />
-</mat-form-field>
-
-<div class="mat-elevation-z8">
-  <table
-    mat-table
-    [dataSource]="dataSource"
-    (matSortChange)="onSortChange($event)"
-    matSort
-    aria-describedby="lista de cozinhas"
-  >
-    <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
-      <td mat-cell *matCellDef="let row">{{ row.id }}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="nome">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Nome</th>
-      <td mat-cell *matCellDef="let row">{{ row.nome }}</td>
-    </ng-container>
-
-    <tr class="mat-row" *matNoDataRow>
-      <td class="mat-cell" colspan="4">No data matching the filter "{{ input.value }}"</td>
-    </tr>
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-  </table>
-
-  <mat-paginator
-    [length]="paginationControl.totalElements"
-    [pageSize]="paginationControl.size"
-    [pageIndex]="paginationControl.page"
-    [pageSizeOptions]="paginationControl.itemsPerPageOptions ?? []"
-    (page)="onPageChange($event)"
-    aria-label="Selecionar página"
-  >
-  </mat-paginator>
+<div class="loading-container" *ngIf="loading; else loadingTemplate">
+  <mat-progress-spinner [mode]="'indeterminate'" [diameter]="120" color="primary"> </mat-progress-spinner>
+  <span class="loading-text">Carregando informações...</span>
 </div>
+
+<ng-template #loadingTemplate>
+  <nav>
+    <ul>
+      <li><a routerLink="../welcome" routerLinkActive="active" ariaCurrentWhenActive="page">Home</a></li>
+    </ul>
+  </nav>
+
+  <mat-form-field>
+    <mat-label>Filter</mat-label>
+    <input matInput placeholder="Ex. Mia" #input />
+  </mat-form-field>
+
+  <div class="mat-elevation-z8">
+    <table
+      mat-table
+      [dataSource]="dataSource"
+      (matSortChange)="onSortChange($event)"
+      matSort
+      aria-describedby="lista de cozinhas"
+    >
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+        <td mat-cell *matCellDef="let row">{{ row.id }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="nome">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Nome</th>
+        <td mat-cell *matCellDef="let row">{{ row.nome }}</td>
+      </ng-container>
+
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4">No data matching the filter "{{ input.value }}"</td>
+      </tr>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+
+    <mat-paginator
+      [pageIndex]="paginationControl.page"
+      [pageSize]="paginationControl.size"
+      [length]="paginationControl.totalElements"
+      [pageSizeOptions]="paginationControl.itemsPerPageOptions ?? []"
+      (page)="onPageChange($event)"
+      aria-label="Selecionar página"
+    >
+    </mat-paginator>
+  </div>
+</ng-template>

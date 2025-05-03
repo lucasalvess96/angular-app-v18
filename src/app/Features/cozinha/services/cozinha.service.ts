@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, Observable, retry } from 'rxjs';
 import { Paginacao } from '../models/paginacao';
 
 @Injectable({
@@ -12,8 +12,9 @@ export class CozinhaService {
   private readonly httpClient = inject(HttpClient);
 
   list(params: HttpParams): Observable<Paginacao> {
-    // Mudando o tipo do parametro
-    return this.httpClient.get<Paginacao>(`${this.baseUrl}/pagination`, { params });
+    return this.httpClient
+      .get<Paginacao>(`${this.baseUrl}/pagination`, { params })
+      .pipe(retry(2), catchError(this.handleError));
   }
 
   private handleError(error: HttpErrorResponse): Observable<never> {
