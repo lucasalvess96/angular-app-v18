@@ -3,7 +3,7 @@
 <ng-container *ngIf="!loading">
   <mat-form-field>
     <mat-label>Filter</mat-label>
-    <input matInput (keyup)="filter($event)" placeholder="Ex. brasileira" #input />
+    <input matInput [formControl]="searchControl" placeholder="Buscar cozinha..." />
   </mat-form-field>
 
   <app-table-component
