@@ -1,24 +1,30 @@
 <app-spinner-component [loading]="loading" />
 
 <ng-container *ngIf="!loading">
-  <nav>
-    <ul>
-      <li><a routerLink="../welcome" routerLinkActive="active" ariaCurrentWhenActive="page">Home</a></li>
-    </ul>
-  </nav>
-
   <mat-form-field>
     <mat-label>Filter</mat-label>
-    <input matInput placeholder="Ex. Mia" #input />
+    <input matInput (keyup)="filter($event)" placeholder="Ex. brasileira" #input />
   </mat-form-field>
 
   <app-table-component
-    mat-table
-    [dataSource]="dataSource"
+    *ngIf="dataSource$ | async as data"
+    [dataSource]="data"
     [displayedColumns]="displayedColumns"
     [columnHeaders]="columnHeaders"
     [paginationControl]="paginationControl"
     (sortChange)="onSortChange($event)"
     (pageChange)="onPageChange($event)"
   />
+
+  <button
+    mat-raised-button
+    color="primary"
+    routerLink="../welcome"
+    routerLinkActive="active"
+    ariaCurrentWhenActive="page"
+    [style.marginTop.rem]="1"
+  >
+    <mat-icon>arrow_back</mat-icon>
+    Home
+  </button>
 </ng-container>
