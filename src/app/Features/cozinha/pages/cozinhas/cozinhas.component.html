@@ -1,6 +1,6 @@
-<app-spinner-component [loading]="loading" />
+<app-spinner-component [loading]="loading" [message]="message" />
 
-<ng-container *ngIf="!loading">
+<ng-container>
   <mat-form-field>
     <mat-label>Filter</mat-label>
     <input matInput [formControl]="searchControl" placeholder="Buscar cozinha..." />
