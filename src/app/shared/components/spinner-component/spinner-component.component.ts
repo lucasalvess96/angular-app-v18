@@ -11,10 +11,10 @@ import { materialModules } from '../../angular-material/material-modules';
   styleUrl: './spinner-component.component.scss',
 })
 export class SpinnerComponentComponent {
-  @Input() loading: boolean = false;
+  @Input() loading?: boolean;
+  @Input() message?: string;
   @Input() diameter: number = 120;
   @Input() color: 'primary' | 'accent' | 'warn' = 'primary';
-  @Input() message: string = 'Carregando informações...';
   mode: ProgressSpinnerMode = 'indeterminate';
   value: number = 50;
 }
