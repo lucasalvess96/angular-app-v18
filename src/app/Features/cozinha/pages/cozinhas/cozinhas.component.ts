@@ -20,9 +20,9 @@ import { materialModules } from '../../../../shared/angular-material/material-mo
 import { SpinnerComponentComponent } from '../../../../shared/components/spinner-component/spinner-component.component';
 import { TableComponentComponent } from '../../../../shared/components/table-component/table-component.component';
 import { getDefaultPaginationControl } from '../../../../shared/constants/pagination';
-import { SortOrder } from '../../models/controlePaginacao';
+import { SortOrder } from '../../../../shared/models/controlePaginacao';
+import { Paginacao } from '../../../../shared/models/paginacao';
 import { Cozinha } from '../../models/cozinha';
-import { Paginacao } from '../../models/paginacao';
 import { CozinhaService } from '../../services/cozinha.service';
 
 @Component({
@@ -86,10 +86,10 @@ export class CozinhasComponent implements OnInit {
 
   fetchCozinhas(): Observable<Cozinha[]> {
     return this.cozinhaService.list(this.buildPaginationParams()).pipe(
-      tap((response: Paginacao) => {
+      tap((response: Paginacao<Cozinha>) => {
         this.paginationControl.totalElements = response.totalElements;
       }),
-      map((response: Paginacao) => response.content),
+      map((response: Paginacao<Cozinha>) => response.content),
     );
   }
 
