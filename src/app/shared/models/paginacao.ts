@@ -1,7 +1,5 @@
-import { Cozinha } from './cozinha';
-
-export interface Paginacao {
-  content: Cozinha[];
+export interface Paginacao<T> {
+  content: T[];
   pageable: Pageable;
   totalPages: number;
   totalElements: number;

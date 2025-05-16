@@ -1,4 +1,4 @@
-import { PaginationControl } from '../../features/cozinha/models/controlePaginacao';
+import { PaginationControl } from '../models/controlePaginacao';
 
 export const PAGINATION_DEFAULT_ITEMS_PER_PAGE_OPTIONS = [5, 10, 20, 50, 100];
 export const PAGINATION_DEFAULT_SIZE = 10;
