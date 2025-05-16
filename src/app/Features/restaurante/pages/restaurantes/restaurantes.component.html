@@ -1,1 +1,88 @@
-<p>restaurantes works!</p>
+<main fxLayout="column" fxLayoutAlign="space-evely start" [style.margin-left.rem]="1">
+  <app-spinner-component [loading]="loading" [message]="message" />
+
+  <mat-form-field>
+    <mat-label>Filter</mat-label>
+    <input matInput [formControl]="searchControl" placeholder="Buscar cozinha..." />
+  </mat-form-field>
+
+  <app-table-component
+    *ngIf="dataSource$ | async as data"
+    [dataSource]="data"
+    [columnHeaders]="columnHeaders"
+    [displayedColumns]="displayedColumns"
+    [actions]="actionsTamplate"
+    [paginationControl]="paginationControl"
+    (pageChange)="onPageChange($event)"
+    (sortChange)="onSortChange($event)"
+  />
+
+  <ng-template #actionsTamplate let-row>
+    <button
+      mat-button
+      type="button"
+      mat-flat-button
+      color="primary"
+      title="informações detalhadas"
+      [routerLink]="['/person-pendencies', row.pendeciesID]"
+    >
+      Detalhes
+    </button>
+  </ng-template>
+
+  <mat-card-actions>
+    <button
+      type="button"
+      title="back home"
+      routerLink=""
+      routerLinkActive="active"
+      ariaCurrentWhenActive="page"
+      mat-flat-button
+      color="warn"
+      [style.margin-top.rem]="1"
+    >
+      <mat-icon>download</mat-icon>
+      baixar
+    </button>
+    <button
+      type="button"
+      title="go to person-create"
+      routerLink="person-create"
+      routerLinkActive="active"
+      ariaCurrentWhenActive="page"
+      mat-flat-button
+      color="primary"
+      [style.margin-left.rem]="1"
+      [style.margin-top.rem]="1"
+    >
+      create
+      <mat-icon iconPositionEnd>create</mat-icon>
+    </button>
+
+    <button
+      mat-raised-button
+      color="accent"
+      routerLink="../welcome"
+      routerLinkActive="active"
+      ariaCurrentWhenActive="page"
+      [style.margin-left.rem]="1"
+      [style.margin-top.rem]="1"
+    >
+      <mat-icon>arrow_back</mat-icon>
+      Home
+    </button>
+
+    <button
+      mat-raised-button
+      color="basic"
+      routerLink="../welcome"
+      routerLinkActive="active"
+      ariaCurrentWhenActive="page"
+      [style.margin-left.rem]="1"
+      [style.margin-top.rem]="1"
+    >
+      <mat-icon>favorite</mat-icon>
+      basico
+    </button>
+  </mat-card-actions>
+</main>
