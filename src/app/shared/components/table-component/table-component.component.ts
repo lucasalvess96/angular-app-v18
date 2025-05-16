@@ -23,6 +23,7 @@ export class TableComponentComponent {
     totalElements: number;
     itemsPerPageOptions?: number[];
   };
+  @Input() customTemplates: { [key: string]: TemplateRef<any> } = {};
 
   @Output() sortChange = new EventEmitter<Sort>();
   @Output() pageChange = new EventEmitter<PageEvent>();

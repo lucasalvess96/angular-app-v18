@@ -6,9 +6,15 @@
       </th>
 
       <td mat-cell *matCellDef="let row">
-        <ng-container *ngIf="column !== 'acoes'; else actionTemplate">
-          {{ row[column] }}
+        <ng-container *ngIf="customTemplates[column]; else defaultCell">
+          <ng-container *ngTemplateOutlet="customTemplates[column]; context: { $implicit: row }"></ng-container>
         </ng-container>
+
+        <ng-template #defaultCell>
+          <ng-container *ngIf="column !== 'acoes'; else actionTemplate">
+            {{ row[column] }}
+          </ng-container>
+        </ng-template>
 
         <ng-template #actionTemplate>
           <ng-container
