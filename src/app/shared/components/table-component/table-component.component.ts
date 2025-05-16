@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, TemplateRef } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -14,8 +14,9 @@ import { materialModules } from '../../angular-material/material-modules';
 })
 export class TableComponentComponent {
   @Input() dataSource: MatTableDataSource<any> | any[] = [];
-  @Input() displayedColumns: string[] = [];
   @Input() columnHeaders: { [key: string]: string } = {};
+  @Input() displayedColumns: string[] = [];
+  @Input() actions?: TemplateRef<any>;
   @Input() paginationControl!: {
     page: number;
     size: number;
