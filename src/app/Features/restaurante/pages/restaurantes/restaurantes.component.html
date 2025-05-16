@@ -12,10 +12,42 @@
     [columnHeaders]="columnHeaders"
     [displayedColumns]="displayedColumns"
     [actions]="actionsTamplate"
+    [customTemplates]="{
+      ativo: ativoTpl,
+      taxaFrete: taxaFreteTpl,
+      dataCadastro: dataCadastroTpl,
+      dataAtualizacao: dataAtualizacaoTpl
+    }"
     [paginationControl]="paginationControl"
     (pageChange)="onPageChange($event)"
     (sortChange)="onSortChange($event)"
   />
+
+  <ng-template #dataCadastroTpl let-row>
+    {{ formatDate(row.dataCadastro) | date : 'dd/MM/yyyy' }}
+  </ng-template>
+
+  <ng-template #dataAtualizacaoTpl let-row>
+    {{ formatDate(row.dataAtualizacao) | date : 'dd/MM/yyyy' }}
+  </ng-template>
+
+  <ng-template #taxaFreteTpl let-row>
+    {{ row.taxaFrete | currency : 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}
+  </ng-template>
+
+  <ng-template #ativoTpl let-row>
+    <span
+      [ngStyle]="{
+        'background-color': row.ativo ? '#4caf50' : '#f44336',
+        color: 'white',
+        padding: '4px 12px',
+        'border-radius': '12px',
+        display: 'inline-block'
+      }"
+    >
+      {{ row.ativo ? 'Ativo' : 'Desativado' }}
+    </span>
+  </ng-template>
 
   <ng-template #actionsTamplate let-row>
     <button

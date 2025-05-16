@@ -19,6 +19,7 @@ import {
 import { materialModules } from '../../../../shared/angular-material/material-modules';
 import { SpinnerComponentComponent } from '../../../../shared/components/spinner-component/spinner-component.component';
 import { TableComponentComponent } from '../../../../shared/components/table-component/table-component.component';
+import { parseBrDate } from '../../../../shared/constants/formatar-datas';
 import { getDefaultPaginationControl } from '../../../../shared/constants/pagination';
 import { SortOrder } from '../../../../shared/models/controlePaginacao';
 import { Paginacao } from '../../../../shared/models/paginacao';
@@ -62,6 +63,8 @@ export class RestaurantesComponent {
   loading = false;
 
   message = 'Carregando informações...';
+
+  formatDate = parseBrDate;
 
   private readonly restauranteService = inject(RestauranteService);
 
