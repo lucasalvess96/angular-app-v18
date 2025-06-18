@@ -19,12 +19,21 @@ export const routes: Routes = [
     path: 'cozinhas',
     loadComponent: () =>
       import('./features/cozinha/pages/cozinhas/cozinhas.component').then((c) => c.CozinhasComponent),
+    data: { preload: true },
   },
   {
     path: 'restaurantes',
     canActivate: [AuthGuard],
     loadComponent: () =>
       import('./features/restaurante/pages/restaurantes/restaurantes.component').then((c) => c.RestaurantesComponent),
+  },
+  {
+    path: 'restaurante-detail/:id',
+    canActivate: [AuthGuard],
+    loadComponent: () =>
+      import('./features/restaurante/pages/restaurante-detail/restaurante-detail.component').then(
+        (c) => c.RestauranteDetailComponent,
+      ),
   },
   {
     path: 'redirect-page',
