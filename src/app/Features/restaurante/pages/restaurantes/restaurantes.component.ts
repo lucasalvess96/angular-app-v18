@@ -44,10 +44,10 @@ import { RestauranteService } from '../../services/restaurante.service';
 export class RestaurantesComponent {
   columnHeaders: { [key: string]: string } = {
     nome: 'nome',
-    taxaFrete: 'Taxa de Frete',
+    taxaFrete: 'Taxa do Frete',
     ativo: 'Ativo',
-    dataCadastro: 'Data de Cadastro',
-    dataAtualizacao: 'Data de Atualização',
+    dataCadastro: 'Data Cadastro',
+    dataAtualizacao: 'Data Atualização',
     acoes: 'Ações',
   };
   displayedColumns: string[] = ['nome', 'taxaFrete', 'ativo', 'dataCadastro', 'dataAtualizacao', 'acoes'];
@@ -66,18 +66,21 @@ export class RestaurantesComponent {
 
   formatDate = parseBrDate;
 
+  LOAD_DELAY = 400;
+
   private readonly restauranteService = inject(RestauranteService);
 
   private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
-  private readonly LOAD_DELAY = 400;
-
   ngOnInit(): void {
-    this.searchControl.valueChanges.pipe(debounceTime(this.LOAD_DELAY), distinctUntilChanged()).subscribe((term) => {
-      this.searchTerm$.next(term ?? '');
-    });
+    const token = localStorage.getItem('token');
+    if (token) {
+      this.searchControl.valueChanges.pipe(debounceTime(this.LOAD_DELAY), distinctUntilChanged()).subscribe((term) => {
+        this.searchTerm$.next(term ?? '');
+      });
 
-    this.dataSource$ = this.createDataSource();
+      this.dataSource$ = this.createDataSource();
+    }
   }
 
   createDataSource(): Observable<Restaurante[]> {
