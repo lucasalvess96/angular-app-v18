@@ -1,9 +1,22 @@
-.texto {
-  color: red;
-  font-weight: bold;
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 80vh;
 }
 
-.botao-google {
-  padding: 10px 20px;
-  font-size: 16px;
+.texto h2 {
+  color: #3269eb;
+}
+
+.botao-google,
+.botao-home {
+  width: 200px;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
 }
