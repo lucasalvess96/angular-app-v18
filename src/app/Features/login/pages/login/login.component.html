@@ -1,0 +1,17 @@
+<div class="texto">
+  <h2>Login</h2>
+  <button class="botao-google" (click)="loginWithGoogle()">Entrar com Google</button>
+</div>
+
+<button
+  mat-raised-button
+  color="primary"
+  routerLink="../welcome"
+  routerLinkActive="active"
+  ariaCurrentWhenActive="page"
+  [style.margin-left.rem]="1"
+  [style.margin-top.rem]="1"
+>
+  <mat-icon>arrow_back</mat-icon>
+  Home
+</button>
