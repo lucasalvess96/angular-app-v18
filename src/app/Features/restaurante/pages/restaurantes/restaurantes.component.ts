@@ -50,7 +50,7 @@ export class RestaurantesComponent {
     dataAtualizacao: 'Data Atualização',
     acoes: 'Ações',
   };
-  displayedColumns: string[] = ['nome', 'taxaFrete', 'ativo', 'dataCadastro', 'dataAtualizacao', 'acoes'];
+  displayedColumns: string[] = ['id', 'nome', 'taxaFrete', 'ativo', 'dataCadastro', 'dataAtualizacao', 'acoes'];
 
   dataSource$!: Observable<Restaurante[]>;
 
