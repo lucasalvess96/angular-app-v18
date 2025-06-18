@@ -1,6 +1,11 @@
 import { Routes } from '@angular/router';
+import { AuthGuard } from './shared/auth-guard/authGuard';
 
 export const routes: Routes = [
+  {
+    path: 'login',
+    loadComponent: () => import('./features/login/pages/login/login.component').then((c) => c.LoginComponent),
+  },
   {
     path: 'welcome',
     loadComponent: () => import('./features/welcome/pages/welcome/welcome.component').then((c) => c.WelcomeComponent),
@@ -17,6 +22,7 @@ export const routes: Routes = [
   },
   {
     path: 'restaurantes',
+    canActivate: [AuthGuard],
     loadComponent: () =>
       import('./features/restaurante/pages/restaurantes/restaurantes.component').then((c) => c.RestaurantesComponent),
   },
