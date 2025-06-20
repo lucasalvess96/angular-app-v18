@@ -24,16 +24,7 @@ export const routes: Routes = [
   {
     path: 'restaurantes',
     canActivate: [AuthGuard],
-    loadComponent: () =>
-      import('./features/restaurante/pages/restaurantes/restaurantes.component').then((c) => c.RestaurantesComponent),
-  },
-  {
-    path: 'restaurante-detail/:id',
-    canActivate: [AuthGuard],
-    loadComponent: () =>
-      import('./features/restaurante/pages/restaurante-detail/restaurante-detail.component').then(
-        (c) => c.RestauranteDetailComponent,
-      ),
+    loadChildren: () => import('./features/restaurante/restaurante.routing').then((m) => m.default),
   },
   {
     path: 'redirect-page',
