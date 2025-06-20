@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
       const token = params['token'];
       if (token) {
         localStorage.setItem('token', token);
-        const redirectUrl = localStorage.getItem('redirectAfterLogin') ?? '/welcome';
+        const redirectUrl = localStorage.getItem('redirectAfterLogin') ?? '/';
         this.router.navigate([redirectUrl]);
       }
     });
