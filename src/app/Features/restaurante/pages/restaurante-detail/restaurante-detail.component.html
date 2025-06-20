@@ -1,9 +1,21 @@
-<p>restaurante-detail works!</p>
+<ng-container *ngIf="restaurante$ | async as data">
+  <h3>Informações de {{ data.nome }}</h3>
+  <hr />
+  <div>
+    <p><strong>Nome:</strong> {{ data.nome }}</p>
+    <p><strong>Data do Cadastro:</strong> {{ data.dataCadastro }}</p>
+    <p><strong>Data de Atualização:</strong> {{ formatDate(data.dataAtualizacao) | date : 'dd/MM/yyyy' }}</p>
+    <p><strong>Preço:</strong> {{ data.taxaFrete | currency : 'BRL' : 'symbol' : '1.2-2' }}</p>
+
+    <p><strong>Cozinha:</strong> {{ data.cozinha.nome }}</p>
+    <p><strong>Ativo:</strong> {{ data.ativo ? 'Sim' : 'Não' }}</p>
+  </div>
+</ng-container>
 
 <button
   mat-raised-button
   color="primary"
-  routerLink="../../restaurantes"
+  routerLink="../../../restaurantes"
   routerLinkActive="active"
   ariaCurrentWhenActive="page"
   [style.margin-left.rem]="1"

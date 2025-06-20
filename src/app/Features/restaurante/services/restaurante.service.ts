@@ -26,4 +26,10 @@ export class RestauranteService {
       .get<Restaurante[]>(`${this.baseUrl}/search?nome=${name}`)
       .pipe(retry(2), catchError(this.exececaoService.handleError));
   }
+
+  detail(id: number): Observable<Restaurante> {
+    return this.httpClient
+      .get<Restaurante>(`${this.baseUrl}/detail/${id}`)
+      .pipe(retry(2), catchError(this.exececaoService.handleError));
+  }
 }
