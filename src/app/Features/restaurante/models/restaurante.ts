@@ -1,3 +1,5 @@
+import { Cozinha } from '../../cozinha/models/cozinha';
+
 export interface Restaurante {
   id: number;
   nome: string;
@@ -6,9 +8,4 @@ export interface Restaurante {
   dataCadastro: string;
   dataAtualizacao: string;
   cozinha: Cozinha;
-}
-
-export interface Cozinha {
-  id: number;
-  nome: string;
 }
