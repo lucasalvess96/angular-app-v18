@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
@@ -8,21 +8,26 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class ExcecaoService {
-  constructor(private readonly location: Location, private readonly router: Router) {}
+  private readonly location = inject(Location);
+  private readonly router = inject(Router);
 
   public handleError(error: HttpErrorResponse): Observable<never> {
     if (error.status === 0) {
       alert('falha ao se conectar com o servidor');
     } else {
-      alert('erro interno no servidor');
+      alert(error.error.message);
     }
 
+    this.redirect();
+
+    throw new Error('Não foi possivél se conectar ao backend');
+  }
+
+  private redirect() {
     if (history.length > 1) {
       this.location.back();
     } else {
-      this.router.navigate(['../home']);
+      this.router.navigate(['../welcome']);
     }
-
-    throw new Error('Não foi possivél se conectar ao backend');
   }
 }
