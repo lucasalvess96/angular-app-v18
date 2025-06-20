@@ -23,7 +23,7 @@ export class ExcecaoService {
     throw new Error('Não foi possivél se conectar ao backend');
   }
 
-  private redirect() {
+  private redirect(): void {
     if (history.length > 1) {
       this.location.back();
     } else {
