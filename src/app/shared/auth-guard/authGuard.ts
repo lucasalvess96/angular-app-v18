@@ -13,6 +13,7 @@ export class AuthGuard implements CanActivate {
     const isAuthenticated = this.oauthService.isLoggedIn();
 
     if (!isAuthenticated) {
+      localStorage.setItem('redirectAfterLogin', this.router.url);
       this.router.navigate(['/login']);
       return false;
     }
