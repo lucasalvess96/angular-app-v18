@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpParams } from '@angular/common/http';
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { Sort } from '@angular/material/sort';
@@ -70,29 +70,20 @@ export class RestaurantesComponent {
 
   private readonly restauranteService = inject(RestauranteService);
 
-  private readonly changeDetectorRef = inject(ChangeDetectorRef);
-
   ngOnInit(): void {
-    const token = localStorage.getItem('token');
-    if (token) {
-      this.searchControl.valueChanges.pipe(debounceTime(this.LOAD_DELAY), distinctUntilChanged()).subscribe((term) => {
-        this.searchTerm$.next(term ?? '');
-      });
+    this.searchControl.valueChanges.pipe(debounceTime(this.LOAD_DELAY), distinctUntilChanged()).subscribe((term) => {
+      this.searchTerm$.next(term ?? '');
+    });
 
-      this.dataSource$ = this.createDataSource();
-    }
+    this.dataSource$ = this.createDataSource();
   }
 
   createDataSource(): Observable<Restaurante[]> {
     return combineLatest([this.paginationChange$, this.searchTerm$]).pipe(
       switchMap(([_, term]) => {
-        this.loading = true;
-        this.changeDetectorRef.detectChanges();
+        finalize(() => (this.loading = false));
         return (term.trim() ? this.restauranteService.search(term) : this.fetchRestaurante()).pipe(
-          finalize(() => {
-            this.loading = false;
-            this.changeDetectorRef.detectChanges();
-          }),
+          finalize(() => (this.loading = false)),
         );
       }),
     );
