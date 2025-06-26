@@ -12,8 +12,8 @@
     [displayedColumns]="displayedColumns"
     [columnHeaders]="columnHeaders"
     [paginationControl]="paginationControl"
-    (sortChange)="onSortChange($event)"
-    (pageChange)="onPageChange($event)"
+    (pageChange)="paginationChange$.next()"
+    (sortChange)="paginationChange$.next()"
   />
 
   <button

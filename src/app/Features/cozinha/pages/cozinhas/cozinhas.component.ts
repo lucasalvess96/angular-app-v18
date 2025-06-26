@@ -1,9 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { HttpParams } from '@angular/common/http';
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { PageEvent } from '@angular/material/paginator';
-import { Sort } from '@angular/material/sort';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import {
   BehaviorSubject,
@@ -19,8 +16,7 @@ import {
 import { materialModules } from '../../../../shared/angular-material/material-modules';
 import { SpinnerComponentComponent } from '../../../../shared/components/spinner-component/spinner-component.component';
 import { TableComponentComponent } from '../../../../shared/components/table-component/table-component.component';
-import { getDefaultPaginationControl } from '../../../../shared/constants/pagination';
-import { SortOrder } from '../../../../shared/models/controlePaginacao';
+import { buildPaginationParams, getDefaultPaginationControl } from '../../../../shared/constants/pagination';
 import { Paginacao } from '../../../../shared/models/paginacao';
 import { Cozinha } from '../../models/cozinha';
 import { CozinhaService } from '../../services/cozinha.service';
@@ -85,35 +81,11 @@ export class CozinhasComponent implements OnInit {
   }
 
   fetchCozinhas(): Observable<Cozinha[]> {
-    return this.cozinhaService.list(this.buildPaginationParams()).pipe(
+    return this.cozinhaService.list(buildPaginationParams(this.paginationControl)).pipe(
       tap((response: Paginacao<Cozinha>) => {
         this.paginationControl.totalElements = response.totalElements;
       }),
       map((response: Paginacao<Cozinha>) => response.content),
     );
-  }
-
-  buildPaginationParams(): HttpParams {
-    const { page, size, sortProperty, sortOrder } = this.paginationControl;
-
-    let params = new HttpParams().set('size', size.toString()).set('page', page.toString());
-
-    if (sortProperty) {
-      params = params.set('sort', `${sortProperty},${sortOrder}`);
-    }
-
-    return params;
-  }
-
-  onPageChange(event: PageEvent): void {
-    this.paginationControl.page = event.pageIndex;
-    this.paginationControl.size = event.pageSize;
-    this.paginationChange$.next();
-  }
-
-  onSortChange(sort: Sort): void {
-    this.paginationControl.sortProperty = sort.active;
-    this.paginationControl.sortOrder = sort.direction as SortOrder;
-    this.paginationChange$.next();
   }
 }
