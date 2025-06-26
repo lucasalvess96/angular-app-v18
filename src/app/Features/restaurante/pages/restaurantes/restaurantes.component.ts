@@ -1,9 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { HttpParams } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { PageEvent } from '@angular/material/paginator';
-import { Sort } from '@angular/material/sort';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import {
   BehaviorSubject,
@@ -20,8 +17,7 @@ import { materialModules } from '../../../../shared/angular-material/material-mo
 import { SpinnerComponentComponent } from '../../../../shared/components/spinner-component/spinner-component.component';
 import { TableComponentComponent } from '../../../../shared/components/table-component/table-component.component';
 import { parseBrDate } from '../../../../shared/constants/formatar-datas';
-import { getDefaultPaginationControl } from '../../../../shared/constants/pagination';
-import { SortOrder } from '../../../../shared/models/controlePaginacao';
+import { buildPaginationParams, getDefaultPaginationControl } from '../../../../shared/constants/pagination';
 import { Paginacao } from '../../../../shared/models/paginacao';
 import { Restaurante } from '../../models/restaurante';
 import { RestauranteService } from '../../services/restaurante.service';
@@ -90,35 +86,11 @@ export class RestaurantesComponent {
   }
 
   fetchRestaurante(): Observable<Restaurante[]> {
-    return this.restauranteService.list(this.buildPaginationParams()).pipe(
+    return this.restauranteService.list(buildPaginationParams(this.paginationControl)).pipe(
       tap((response: Paginacao<Restaurante>) => {
         this.paginationControl.totalElements = response.totalElements;
       }),
       map((response: Paginacao<Restaurante>) => response.content),
     );
-  }
-
-  buildPaginationParams(): HttpParams {
-    const { page, size, sortProperty, sortOrder } = this.paginationControl;
-
-    let params = new HttpParams().set('size', size.toString()).set('page', page.toString());
-
-    if (sortProperty) {
-      params = params.set('sort', `${sortProperty},${sortOrder}`);
-    }
-
-    return params;
-  }
-
-  onPageChange(event: PageEvent): void {
-    this.paginationControl.page = event.pageIndex;
-    this.paginationControl.size = event.pageSize;
-    this.paginationChange$.next();
-  }
-
-  onSortChange(sort: Sort): void {
-    this.paginationControl.sortProperty = sort.active;
-    this.paginationControl.sortOrder = sort.direction as SortOrder;
-    this.paginationChange$.next();
   }
 }

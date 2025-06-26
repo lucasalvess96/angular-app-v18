@@ -19,8 +19,8 @@
       dataAtualizacao: dataAtualizacaoTpl
     }"
     [paginationControl]="paginationControl"
-    (pageChange)="onPageChange($event)"
-    (sortChange)="onSortChange($event)"
+    (pageChange)="paginationChange$.next()"
+    (sortChange)="paginationChange$.next()"
   />
 
   <ng-template #dataCadastroTpl let-row>
