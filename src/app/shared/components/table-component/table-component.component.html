@@ -1,5 +1,5 @@
 <div class="mat-elevation-z8">
-  <table mat-table [dataSource]="dataSource" (matSortChange)="sortChange.emit($event)" matSort aria-describedby="lista">
+  <table mat-table [dataSource]="dataSource" (matSortChange)="onSortChange($event)" matSort aria-describedby="lista">
     <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>
         {{ columnHeaders[column] || column }}
@@ -37,7 +37,7 @@
     [pageSize]="paginationControl.size"
     [length]="paginationControl.totalElements"
     [pageSizeOptions]="paginationControl.itemsPerPageOptions ?? []"
-    (page)="pageChange.emit($event)"
+    (page)="onPageChange($event)"
     aria-label="Selecionar página"
   >
   </mat-paginator>
