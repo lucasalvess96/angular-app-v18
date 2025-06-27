@@ -1,0 +1,62 @@
+<form class="example-form" *ngIf="formGroup" [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+  <div class="form-row">
+    <mat-form-field class="example-full-width">
+      <mat-label>Nome do restaurante</mat-label>
+      <input matInput placeholder="Ex. restaurante Pará" formControlName="nome" required />
+      <mat-error
+        *ngIf="
+          formGroup.get('nome')?.hasError('required') &&
+          (formGroup.get('nome')?.touched || formGroup.get('nome')?.dirty)
+        "
+      >
+        O campo não pode ser vazio
+      </mat-error>
+
+      <mat-error
+        *ngIf="
+          formGroup.get('nome')?.hasError('pattern') &&
+          !formGroup.get('nome')?.hasError('required') &&
+          (formGroup.get('nome')?.touched || formGroup.get('nome')?.dirty)
+        "
+      >
+        O campo deve conter apenas letras
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>Taxa de entrega</mat-label>
+      <input matInput placeholder="Ex. 7,99" formControlName="taxaEntrega" required />
+    </mat-form-field>
+  </div>
+
+  <div class="form-row">
+    <mat-form-field class="example-full-width">
+      <mat-label>Disponível para entrega</mat-label>
+      <input matInput placeholder="Ex. sim" formControlName="disponivelParaEntrega" required />
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <mat-label>Cozinha</mat-label>
+      <input matInput placeholder="Ex. 14" formControlName="cozinha" required />
+    </mat-form-field>
+  </div>
+
+  <section class="actions">
+    <button type="submit" title="submit form" mat-raised-button color="primary" [disabled]="!formGroup.valid">
+      <mat-icon iconPositionEnd>save</mat-icon>
+      save
+    </button>
+
+    <button
+      type="submit"
+      title="submit form"
+      mat-raised-button
+      color="accent"
+      routerLink="../../restaurantes"
+      routerLinkActive="active"
+      ariaCurrentWhenActive="page"
+    >
+      <mat-icon>arrow_back</mat-icon>
+      Voltar
+    </button>
+  </section>
+</form>

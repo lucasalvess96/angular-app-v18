@@ -1,0 +1,26 @@
+.example-form {
+  min-width: 10rem;
+  max-width: 65.25rem;
+  width: 100vw;
+}
+
+.example-full-width {
+  width: 100vw;
+}
+
+.form-row {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.example-half-width {
+  flex: 1;
+  width: 100vw;
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
