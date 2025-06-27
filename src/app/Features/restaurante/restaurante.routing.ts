@@ -15,5 +15,12 @@ export const routes: Route[] = [
         (c) => c.RestauranteDetailComponent,
       ),
   },
+  {
+    path: 'restaurante-create',
+    loadComponent: () =>
+      import('../../features/restaurante/pages/restaurante-create/restaurante-create.component').then(
+        (c) => c.RestauranteCreateComponent,
+      ),
+  },
 ];
 export default routes;
