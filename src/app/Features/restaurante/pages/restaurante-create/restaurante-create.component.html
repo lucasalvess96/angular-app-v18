@@ -2,7 +2,7 @@
   <div class="form-row">
     <mat-form-field class="example-full-width">
       <mat-label>Nome do restaurante</mat-label>
-      <input matInput placeholder="Ex. restaurante Pará" formControlName="nome" required />
+      <input matInput placeholder="Ex. restaurante Pará" formControlName="nome" autocomplete="off" required />
       <mat-error
         *ngIf="
           formGroup.get('nome')?.hasError('required') &&
@@ -25,18 +25,36 @@
 
     <mat-form-field class="example-full-width">
       <mat-label>Taxa de entrega</mat-label>
-      <input matInput placeholder="Ex. 7,99" formControlName="taxaEntrega" required />
+      <input
+        matInput
+        placeholder="Ex. R$7,99"
+        formControlName="taxaEntrega"
+        mask="separator.2"
+        thousandSeparator="."
+        decimalMarker=","
+        prefix="R$ "
+        (keydown)="blockNonNumeric($event)"
+        required
+      />
+      <mat-error
+        *ngIf="
+          formGroup.get('taxaEntrega')?.hasError('required') &&
+          (formGroup.get('taxaEntrega')?.touched || formGroup.get('taxaEntrega')?.dirty)
+        "
+      >
+        O campo não pode ser vazio
+      </mat-error>
     </mat-form-field>
   </div>
 
   <div class="form-row">
     <mat-form-field class="example-full-width">
       <mat-label>Disponível para entrega</mat-label>
-      <input matInput placeholder="Ex. sim" formControlName="disponivelParaEntrega" required />
+      <input matInput placeholder="Ex. sim" formControlName="disponivelParaEntrega" autocomplete="off" required />
     </mat-form-field>
-    <mat-form-field class="example-full-width">
+    <mat-form-field class="example-full-width" formGroupName="cozinha">
       <mat-label>Cozinha</mat-label>
-      <input matInput placeholder="Ex. 14" formControlName="cozinha" required />
+      <input matInput placeholder="Ex. 14" formControlName="id" autocomplete="off" required />
     </mat-form-field>
   </div>
 
