@@ -27,7 +27,7 @@ export const routes: Routes = [
     loadChildren: () => import('./features/restaurante/restaurante.routing').then((m) => m.default),
   },
   {
-    path: 'person',
+    path: 'person-home',
     loadChildren: () => import('./features/person/person.routing').then((m) => m.default),
   },
   {
