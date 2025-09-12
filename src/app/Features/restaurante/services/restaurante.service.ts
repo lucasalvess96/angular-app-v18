@@ -15,6 +15,13 @@ export class RestauranteService {
 
   private readonly exececaoService = inject(ExcecaoService);
 
+  create(restaurante: Restaurante): Observable<Restaurante> {
+    return this.httpClient.post<Restaurante>(`${this.baseUrl}/create`, restaurante).pipe(
+      retry(2),
+      catchError((error) => this.exececaoService.handleError(error)),
+    );
+  }
+
   list(params: HttpParams): Observable<Paginacao<Restaurante>> {
     return this.httpClient.get<Paginacao<Restaurante>>(`${this.baseUrl}/pagination`, { params }).pipe(
       retry(2),
