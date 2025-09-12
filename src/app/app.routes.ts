@@ -27,6 +27,10 @@ export const routes: Routes = [
     loadChildren: () => import('./features/restaurante/restaurante.routing').then((m) => m.default),
   },
   {
+    path: 'person',
+    loadChildren: () => import('./features/person/person.routing').then((m) => m.default),
+  },
+  {
     path: 'redirect-page',
     loadComponent: () =>
       import('./features/page-redirect/pages/page-redirect/page-redirect.component').then(
