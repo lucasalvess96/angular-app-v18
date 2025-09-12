@@ -2,6 +2,7 @@ import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { PreloadAllModules, provideRouter, withPreloading } from '@angular/router';
 
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideNgxMask } from 'ngx-mask';
 import { routes } from './app.routes';
 import { AuthInterceptor } from './shared/auth-interceptor/authInterceptor';
 export const appConfig: ApplicationConfig = {
@@ -14,5 +15,6 @@ export const appConfig: ApplicationConfig = {
       useClass: AuthInterceptor,
       multi: true,
     },
+    provideNgxMask(),
   ],
 };
