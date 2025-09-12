@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import {
@@ -37,7 +37,7 @@ import { RestauranteService } from '../../services/restaurante.service';
   templateUrl: './restaurantes.component.html',
   styleUrl: './restaurantes.component.scss',
 })
-export class RestaurantesComponent {
+export class RestaurantesComponent implements OnInit {
   columnHeaders: { [key: string]: string } = {
     nome: 'nome',
     taxaFrete: 'Taxa do Frete',
