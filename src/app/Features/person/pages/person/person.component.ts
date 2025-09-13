@@ -1,20 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, ViewChild } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import {
-  BehaviorSubject,
-  debounceTime,
-  distinctUntilChanged,
-  map,
-  Observable,
-  Subject,
-  switchMap,
-  takeUntil,
-  tap,
-} from 'rxjs';
+import { BehaviorSubject, delay, finalize, map, Observable, switchMap } from 'rxjs';
 import { materialModules } from '../../../../shared/angular-material/material-modules';
 import { SpinnerComponentComponent } from '../../../../shared/components/spinner-component/spinner-component.component';
 import { Person } from '../../models/person';
@@ -27,7 +18,7 @@ import { PersonService } from '../../services/person.service';
   templateUrl: './person.component.html',
   styleUrl: './person.component.scss',
 })
-export class PersonComponent implements OnInit, OnDestroy {
+export class PersonComponent implements OnInit {
   displayedColumns: string[] = ['id', 'name', 'age', 'cpf', 'actions'];
   dataSource!: MatTableDataSource<Person>;
 
@@ -42,63 +33,44 @@ export class PersonComponent implements OnInit, OnDestroy {
 
   filterInput = new BehaviorSubject<string>('');
 
-  private destroy$ = new Subject<void>();
-
   private readonly personService = inject(PersonService);
 
-  ngOnInit(): void {
-    // this.list();
-    // this.searchList();
+  private readonly destroyRef = inject(DestroyRef);
 
-    this.persons$ = this.filterInput.pipe(
-      debounceTime(this.TIME_DELAY),
-      distinctUntilChanged(),
-      tap(() => (this.loading = true)),
-      switchMap((term) => (term ? this.personService.searchList(term) : this.personService.list())),
-      map((persons) => {
-        const ds = new MatTableDataSource(persons);
-        ds.paginator = this.paginator;
-        ds.sort = this.sort;
-        return ds;
-      }),
-      tap(() => (this.loading = false)),
-      takeUntil(this.destroy$),
-    );
+  ngOnInit(): void {
+    this.createDataSource();
   }
 
-  // list(): void {
-  //   this.loading = true;
-  //   this.persons$ = this.personService.list().pipe(
-  //     delay(this.TIME_DELAY),
-  //     tap((response: Person[]) => {
-  //       this.dataSource = new MatTableDataSource(response);
-  //       this.dataSource.paginator = this.paginator;
-  //       this.dataSource.sort = this.sort;
-  //     }),
-  //     finalize(() => (this.loading = false)),
-  //   );
-  // }
+  createDataSource(): void {
+    this.loading = true;
+    this.persons$ = this.filterInput.pipe(
+      delay(this.TIME_DELAY),
+      switchMap((term: string) => {
+        const request$ = term.trim() ? this.personService.searchList(term) : this.personService.list();
+        return request$.pipe(
+          map((persons: Person[]) => {
+            const tableData = new MatTableDataSource(persons);
+            tableData.paginator = this.paginator;
+            tableData.sort = this.sort;
+            return tableData;
+          }),
+          finalize(() => (this.loading = false)),
+        );
+      }),
+      takeUntilDestroyed(this.destroyRef),
+    );
+    this.filterInput.next('');
+  }
 
-  // searchList(): void {
-  //   this.filterInput
-  //     .pipe(
-  //       debounceTime(this.TIME_DELAY),
-  //       distinctUntilChanged(),
-  //       tap(() => (this.loading = true)),
-  //       switchMap((term: string) => (term ? this.personService.searchList(term) : this.personService.list())),
-  //       tap((response: Person[]) => {
-  //         this.dataSource = new MatTableDataSource(response);
-  //         this.dataSource.paginator = this.paginator;
-  //         this.dataSource.sort = this.sort;
-  //       }),
-  //       finalize(() => (this.loading = false)),
-  //     )
-  //     .subscribe();
-  // }
+  applyFilter(value: string): void {
+    this.loading = true;
+    this.filterInput.next(value.trim());
+  }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value.trim();
-    this.filterInput.next(filterValue);
+  clearFilter(input: HTMLInputElement): void {
+    input.value = '';
+    this.loading = true;
+    this.filterInput.next('');
   }
 
   edit(row: Person) {
@@ -107,10 +79,5 @@ export class PersonComponent implements OnInit, OnDestroy {
 
   delete(id: number) {
     console.log(id);
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }
