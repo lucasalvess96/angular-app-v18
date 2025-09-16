@@ -1,0 +1,21 @@
+<ng-container *ngIf="person$ | async as data">
+  <h3>Informações de {{ data.name | uppercase }}</h3>
+  <hr />
+  <div>
+    <p><strong>Nome:</strong> {{ data.name }}</p>
+    <p><strong>Idade:</strong> {{ data.age }}</p>
+    <p><strong>CPF:</strong> {{ data.cpf | cpfMask }}</p>
+  </div>
+</ng-container>
+
+<button
+  type="button"
+  mat-flat-button
+  color="warn"
+  [routerLink]="['../../person']"
+  routerLinkActive="active"
+  ariaCurrentWhenActive="page"
+  [style.marginTop.rem]="1"
+>
+  Voltar
+</button>
