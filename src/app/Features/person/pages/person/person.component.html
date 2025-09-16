@@ -55,7 +55,13 @@
               <button type="button" [title]="'delete'" mat-icon-button color="warn">
                 <mat-icon>delete</mat-icon>
               </button>
-              <button type="button" [title]="'detail'" mat-icon-button color="basic">
+              <button
+                type="button"
+                [title]="'detail'"
+                mat-icon-button
+                color="basic"
+                [routerLink]="['/person-home/detail', row.id]"
+              >
                 <mat-icon>arrow_circle_right</mat-icon>
               </button>
             </td>
