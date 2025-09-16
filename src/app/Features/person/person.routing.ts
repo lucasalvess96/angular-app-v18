@@ -10,6 +10,10 @@ const routes: Route[] = [
     loadComponent: () => import('./pages/person/person.component').then((c) => c.PersonComponent),
   },
   {
+    path: 'add',
+    loadComponent: () => import('./pages/person-add/person-add.component').then((c) => c.PersonAddComponent),
+  },
+  {
     path: 'person-signal',
     loadComponent: () => import('./pages/person-signal/person-signal.component').then((c) => c.PersonSignalComponent),
   },

@@ -45,11 +45,18 @@
           <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Ações</th>
             <td mat-cell *matCellDef="let row">
-              <button type="button" mat-icon-button color="primary" (click)="edit(row)">
+              <button type="button" [title]="'add'" mat-icon-button color="primary">
+                <mat-icon>add_circle</mat-icon>
+              </button>
+
+              <button type="button" [title]="'edit data'" mat-icon-button color="accent">
                 <mat-icon>edit</mat-icon>
               </button>
-              <button type="button" mat-icon-button color="warn" (click)="delete(row.id)">
+              <button type="button" [title]="'delete'" mat-icon-button color="warn">
                 <mat-icon>delete</mat-icon>
+              </button>
+              <button type="button" [title]="'detail'" mat-icon-button color="basic">
+                <mat-icon>arrow_circle_right</mat-icon>
               </button>
             </td>
           </ng-container>
@@ -70,12 +77,27 @@
 
 <button
   type="button"
+  [title]="'home'"
   mat-flat-button
   color="warn"
-  routerLink="../../person-home"
+  [routerLink]="['../../person-home']"
   routerLinkActive="active"
   ariaCurrentWhenActive="page"
   [style.marginTop.rem]="1"
 >
   Voltar
+</button>
+
+<button
+  type="button"
+  [title]="'adicionar'"
+  mat-flat-button
+  color="primary"
+  [routerLink]="['/person-home/add']"
+  routerLinkActive="active"
+  ariaCurrentWhenActive="page"
+  [style.marginTop.rem]="1"
+  [style.margin-left.rem]="1"
+>
+  Adicionar
 </button>
