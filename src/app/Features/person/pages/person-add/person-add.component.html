@@ -1,0 +1,47 @@
+<p>person-add works!</p>
+
+<app-spinner-component />
+
+<form class="example-form" *ngIf="formGroup" [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+  <p>
+    <mat-form-field appearance="outline" class="example-full-width">
+      <mat-label>NAME</mat-label>
+      <input matInput placeholder="John Doe" formControlName="name" />
+    </mat-form-field>
+  </p>
+  <p>
+    <mat-form-field appearance="outline" class="example-full-width">
+      <mat-label>AGE</mat-label>
+      <input matInput placeholder="18" formControlName="age" />
+    </mat-form-field>
+  </p>
+  <p>
+    <mat-form-field appearance="outline" class="example-full-width">
+      <mat-label>CPF</mat-label>
+      <input matInput placeholder="010.001.001-10" formControlName="cpf" />
+    </mat-form-field>
+  </p>
+
+  <button
+    type="button"
+    mat-flat-button
+    color="warn"
+    [routerLink]="['../person']"
+    routerLinkActive="active"
+    ariaCurrentWhenActive="page"
+    [style.marginTop.rem]="1"
+  >
+    Voltar
+  </button>
+
+  <button
+    type="submit"
+    [style.marginTop.rem]="1"
+    [style.margin-left.rem]="1"
+    mat-raised-button
+    color="primary"
+    [disabled]="!formGroup.valid"
+  >
+    Salvar
+  </button>
+</form>
