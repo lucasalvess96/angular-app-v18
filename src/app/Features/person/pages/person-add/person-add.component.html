@@ -5,12 +5,23 @@
     <mat-form-field appearance="outline" class="example-full-width">
       <mat-label>NAME</mat-label>
       <input matInput placeholder="John Doe" formControlName="name" autocomplete="off" />
+
+      <mat-error *ngIf="formGroup.get('name')?.invalid">
+        <span *ngIf="formGroup.get('name')?.errors?.['required']">Campo obrigatório</span>
+        <span *ngIf="formGroup.get('name')?.errors?.['pattern']">Deve conter apenas letras e sem espaços extras.</span>
+      </mat-error>
     </mat-form-field>
   </p>
   <p>
     <mat-form-field appearance="outline" class="example-full-width">
       <mat-label>AGE</mat-label>
       <input matInput placeholder="18" formControlName="age" mask="00" autocomplete="off" />
+
+      <mat-error *ngIf="formGroup.get('age')?.invalid">
+        <span *ngIf="formGroup.get('age')?.errors?.['required']">Campo obrigatório</span>
+        <span *ngIf="formGroup.get('age')?.errors?.['minlength']">Informe no mínimo 2 dígitos, </span>
+        <span *ngIf="formGroup.get('age')?.errors?.['pattern']">O campo só permite números</span>
+      </mat-error>
     </mat-form-field>
   </p>
   <p>
@@ -24,6 +35,12 @@
         autocomplete="off"
         [dropSpecialCharacters]="true"
       />
+
+      <mat-error *ngIf="formGroup.get('cpf')?.invalid">
+        <span *ngIf="formGroup.get('cpf')?.errors?.['required']">Campo obrigatório</span>
+        <span *ngIf="formGroup.get('cpf')?.errors?.['minlength']">Informe a quantidade de dígitos de um CPF</span>
+        <span *ngIf="formGroup.get('cpf')?.errors?.['pattern']">O campo só permite números</span>
+      </mat-error>
     </mat-form-field>
   </p>
 
