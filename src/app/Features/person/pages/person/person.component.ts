@@ -72,12 +72,4 @@ export class PersonComponent implements OnInit {
     this.loading = true;
     this.filterInput.next('');
   }
-
-  edit(row: Person) {
-    console.log(row);
-  }
-
-  delete(id: number) {
-    console.log(id);
-  }
 }
