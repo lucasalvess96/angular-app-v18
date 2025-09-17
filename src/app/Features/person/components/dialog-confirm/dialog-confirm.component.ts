@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-dialog-confirm',
@@ -9,7 +9,12 @@ import { MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/mater
   styleUrl: './dialog-confirm.component.scss',
 })
 export class DialogConfirmComponent {
+  title?: string;
+  message?: string;
+
   private readonly matDialogRef = inject(MatDialogRef);
+
+  readonly data = inject(MAT_DIALOG_DATA);
 
   onConfirm(): void {
     this.matDialogRef.close(true);

@@ -1,5 +1,5 @@
-<mat-dialog-content>Salvar Formulário</mat-dialog-content>
+<mat-dialog-content>{{ data.title }}</mat-dialog-content>
 <mat-dialog-actions>
-  <button mat-raised-button (click)="onConfirm()">Salvar alterações</button>
+  <button mat-raised-button (click)="onConfirm()">{{ data.message }}</button>
   <button mat-raised-button (click)="onDismiss()">Cancelar</button>
 </mat-dialog-actions>
