@@ -62,7 +62,7 @@ export class PersonAddComponent implements OnInit {
       .open(DialogConfirmComponent, {
         width: '30vw',
         disableClose: true,
-        data: { formGroup: this.formGroup },
+        data: { title: 'Salvar Informações', message: 'Salvar' },
       })
       .afterClosed()
       .subscribe((confirmed: boolean) => {
