@@ -1,0 +1,103 @@
+<main fxLayout="column" fxLayoutAlign="space-evely start" [style.margin-left.rem]="1">
+  <app-spinner-component [loading]="loading()" [message]="message" />
+
+  <div class="filter-container">
+    <mat-form-field appearance="fill">
+      <mat-label>Filter</mat-label>
+      <input matInput placeholder="Ex. Mia" #input autocomplete="off" />
+    </mat-form-field>
+
+    <button type="button" mat-flat-button color="primary" (click)="applyFilter(input.value)">
+      <mat-icon class="mat-18">search</mat-icon>
+      Buscar
+    </button>
+
+    <button type="button" mat-stroked-button color="accent" (click)="clearFilter(input)">
+      <mat-icon class="mat-18">close</mat-icon>
+      Limpar
+    </button>
+  </div>
+
+  <app-table-component
+    [dataSource]="dataSource()"
+    [displayedColumns]="displayedColumns"
+    [actions]="actionsTamplate"
+    [customTemplates]="{ cpf: cpfCustom }"
+    [paginationControl]="paginationControl()"
+    (pageChange)="onPageChange($event)"
+    (sortChange)="onSortChange($event)"
+  />
+
+  <ng-template #cpfCustom let-row>
+    {{ row.cpf | cpfMask }}
+  </ng-template>
+
+  <ng-template #actionsTamplate let-row>
+    <button
+      mat-button
+      type="button"
+      mat-flat-button
+      color="primary"
+      title="informações detalhadas"
+      [routerLink]="['/person-home/detail', row.id]"
+    >
+      Detalhes
+    </button>
+  </ng-template>
+
+  <mat-card-actions>
+    <button
+      type="button"
+      title="back home"
+      routerLink=""
+      routerLinkActive="active"
+      ariaCurrentWhenActive="page"
+      mat-flat-button
+      color="warn"
+      [style.margin-top.rem]="1"
+    >
+      <mat-icon>download</mat-icon>
+      baixar
+    </button>
+    <button
+      type="button"
+      title="go to restaurante-create"
+      routerLink="/restaurantes/restaurante-create"
+      routerLinkActive="active"
+      ariaCurrentWhenActive="page"
+      mat-flat-button
+      color="primary"
+      [style.margin-left.rem]="1"
+      [style.margin-top.rem]="1"
+    >
+      create
+      <mat-icon iconPositionEnd>create</mat-icon>
+    </button>
+
+    <button
+      mat-raised-button
+      color="accent"
+      routerLink="../welcome"
+      routerLinkActive="active"
+      ariaCurrentWhenActive="page"
+      [style.margin-left.rem]="1"
+      [style.margin-top.rem]="1"
+    >
+      <mat-icon>arrow_back</mat-icon>
+      Home
+    </button>
+
+    <button
+      mat-raised-button
+      color="basic"
+      routerLink="../welcome"
+      routerLinkActive="active"
+      ariaCurrentWhenActive="page"
+      [style.margin-left.rem]="1"
+      [style.margin-top.rem]="1"
+    >
+      <mat-icon>favorite</mat-icon>
+      basico
+    </button>
+  </mat-card-actions>
+</main>
