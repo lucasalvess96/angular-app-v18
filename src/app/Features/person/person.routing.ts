@@ -21,10 +21,6 @@ const routes: Route[] = [
     path: 'edit/:id',
     loadComponent: () => import('./pages/person-update/person-update.component').then((c) => c.PersonUpdateComponent),
   },
-  {
-    path: 'person-signal',
-    loadComponent: () => import('./pages/person-signal/person-signal.component').then((c) => c.PersonSignalComponent),
-  },
 ];
 
 export default routes;
