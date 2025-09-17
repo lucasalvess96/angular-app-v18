@@ -57,7 +57,7 @@ export class PersonService {
 
   searchPagination(name: string, params: HttpParams): Observable<Paginacao<Person>> {
     return this.httpClient
-      .get<Paginacao<Person>>(`${this.baseUrl}/search-pagination?name=${name}`, { params })
+      .get<Paginacao<Person>>(`${this.baseUrl}/search/pagination?name=${name}`, { params })
       .pipe(retry(2), catchError(this.exececaoService.handleError));
   }
 
