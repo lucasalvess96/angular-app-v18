@@ -5,7 +5,7 @@
     <div class="filter-container">
       <mat-form-field appearance="fill">
         <mat-label>Filter</mat-label>
-        <input matInput placeholder="Ex. Mia" #input />
+        <input matInput placeholder="Ex. Mia" #input autocomplete="off" />
       </mat-form-field>
 
       <button type="button" mat-flat-button color="primary" (click)="applyFilter(input.value)">
@@ -58,7 +58,7 @@
               >
                 <mat-icon>edit</mat-icon>
               </button>
-              <button type="button" [title]="'delete'" mat-icon-button color="warn">
+              <button type="button" [title]="'delete'" mat-icon-button color="warn" (click)="openDialogConfirm(row.id)">
                 <mat-icon>delete</mat-icon>
               </button>
               <button

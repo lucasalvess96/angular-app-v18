@@ -1,13 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, inject, OnInit, ViewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject, delay, finalize, map, Observable, switchMap } from 'rxjs';
 import { materialModules } from '../../../../shared/angular-material/material-modules';
 import { SpinnerComponentComponent } from '../../../../shared/components/spinner-component/spinner-component.component';
+import { DialogConfirmComponent } from '../../components/dialog-confirm/dialog-confirm.component';
 import { Person } from '../../models/person';
 import { PersonService } from '../../services/person.service';
 
@@ -34,6 +37,8 @@ export class PersonComponent implements OnInit {
   filterInput = new BehaviorSubject<string>('');
 
   private readonly personService = inject(PersonService);
+  private readonly toastService = inject(ToastrService);
+  private readonly dialog = inject(MatDialog);
 
   private readonly destroyRef = inject(DestroyRef);
 
@@ -71,5 +76,27 @@ export class PersonComponent implements OnInit {
     input.value = '';
     this.loading = true;
     this.filterInput.next('');
+  }
+
+  delete(id: number): void {
+    this.personService.delete(id).subscribe(() => {
+      this.toastService.success('Cadastro excluído com sucesso!');
+      this.createDataSource();
+    });
+  }
+
+  openDialogConfirm(id: number): void {
+    this.dialog
+      .open(DialogConfirmComponent, {
+        width: '30vw',
+        disableClose: true,
+        data: { title: 'Confirmar exclusão', message: 'deletar' },
+      })
+      .afterClosed()
+      .subscribe((confirmed: boolean) => {
+        if (confirmed) {
+          this.delete(id);
+        }
+      });
   }
 }
