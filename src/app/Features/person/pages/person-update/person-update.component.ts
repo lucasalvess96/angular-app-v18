@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -19,10 +18,6 @@ import { PersonService } from '../../services/person.service';
 })
 export class PersonUpdateComponent implements OnInit {
   person?: Person;
-
-  formGroup?: FormGroup;
-
-  private readonly formBuilder: FormBuilder = inject(FormBuilder);
 
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
