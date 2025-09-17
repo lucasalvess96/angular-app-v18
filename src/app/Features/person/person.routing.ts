@@ -18,6 +18,10 @@ const routes: Route[] = [
     loadComponent: () => import('./pages/person-detail/person-detail.component').then((c) => c.PersonDetailComponent),
   },
   {
+    path: 'edit/:id',
+    loadComponent: () => import('./pages/person-update/person-update.component').then((c) => c.PersonUpdateComponent),
+  },
+  {
     path: 'person-signal',
     loadComponent: () => import('./pages/person-signal/person-signal.component').then((c) => c.PersonSignalComponent),
   },
