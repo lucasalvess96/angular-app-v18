@@ -38,6 +38,7 @@ export class PersonComponent implements OnInit {
 
   private readonly personService = inject(PersonService);
   private readonly toastService = inject(ToastrService);
+
   private readonly dialog = inject(MatDialog);
 
   private readonly destroyRef = inject(DestroyRef);
