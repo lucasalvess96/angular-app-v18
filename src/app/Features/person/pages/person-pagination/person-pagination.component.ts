@@ -82,7 +82,8 @@ export class PersonPaginationComponent implements OnInit {
     this.paginationChange$.next();
   }
 
-  clearFilter(): void {
+  clearFilter(input: HTMLInputElement): void {
+    input.value = '';
     this.searchTerm$.next('');
     this.paginationChange$.next();
   }
