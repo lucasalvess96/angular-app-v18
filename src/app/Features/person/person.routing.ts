@@ -21,6 +21,11 @@ const routes: Route[] = [
     path: 'edit/:id',
     loadComponent: () => import('./pages/person-update/person-update.component').then((c) => c.PersonUpdateComponent),
   },
+  {
+    path: 'pagination',
+    loadComponent: () =>
+      import('./pages/person-pagination/person-pagination.component').then((c) => c.PersonPaginationComponent),
+  },
 ];
 
 export default routes;
