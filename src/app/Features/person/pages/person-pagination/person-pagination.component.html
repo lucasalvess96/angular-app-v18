@@ -24,7 +24,7 @@
     [displayedColumns]="displayedColumns"
     [actions]="actionsTamplate"
     [customTemplates]="{ cpf: cpfCustom }"
-    [paginationControl]="paginationControl"
+    [paginationControl]="defaultPagination"
     (pageChange)="paginationChange$.next()"
     (sortChange)="paginationChange$.next()"
   />
