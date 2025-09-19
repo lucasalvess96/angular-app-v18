@@ -34,16 +34,28 @@
   </ng-template>
 
   <ng-template #actionsTamplate let-row>
-    <button
-      mat-button
-      type="button"
-      mat-flat-button
-      color="primary"
-      title="informações detalhadas"
-      [routerLink]="['/person-home/detail', row.id]"
-    >
-      Detalhes
-    </button>
+    <div class="actions-container">
+      <button
+        mat-button
+        type="button"
+        mat-flat-button
+        color="primary"
+        title="informações detalhadas"
+        [routerLink]="['/person-home/detail', row.id]"
+      >
+        Detalhes
+      </button>
+
+      <button
+        type="button"
+        [title]="'edit data'"
+        mat-icon-button
+        color="accent"
+        [routerLink]="['/person-home/edit', row.id]"
+      >
+        <mat-icon>edit</mat-icon>
+      </button>
+    </div>
   </ng-template>
 
   <mat-card-actions>
