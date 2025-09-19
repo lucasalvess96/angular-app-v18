@@ -32,7 +32,7 @@ export class PersonPaginationComponent implements OnInit {
   displayedColumns: string[] = ['id', 'name', 'age', 'cpf', 'acoes'];
   dataSource$!: Observable<Person[]>;
 
-  paginationControl = getDefaultPaginationControl();
+  defaultPagination = getDefaultPaginationControl();
   paginationChange$ = new BehaviorSubject<void>(undefined);
 
   searchTerm$ = new BehaviorSubject<string>('');
@@ -59,9 +59,9 @@ export class PersonPaginationComponent implements OnInit {
   }
 
   fetchPagination(): Observable<Person[]> {
-    return this.personService.pagination(buildPaginationParams(this.paginationControl)).pipe(
+    return this.personService.pagination(buildPaginationParams(this.defaultPagination)).pipe(
       tap((response: Paginacao<Person>) => {
-        this.paginationControl.totalElements = response.totalElements;
+        this.defaultPagination.totalElements = response.totalElements;
       }),
       map((response: Paginacao<Person>) => response.content),
     );
@@ -69,9 +69,9 @@ export class PersonPaginationComponent implements OnInit {
 
   //  pagination filter
   searchPagination(term: string): Observable<Person[]> {
-    return this.personService.searchPagination(term, buildPaginationParams(this.paginationControl)).pipe(
+    return this.personService.searchPagination(term, buildPaginationParams(this.defaultPagination)).pipe(
       tap((response: Paginacao<Person>) => {
-        this.paginationControl.totalElements = response.totalElements;
+        this.defaultPagination.totalElements = response.totalElements;
       }),
       map((response: Paginacao<Person>) => response.content),
     );
