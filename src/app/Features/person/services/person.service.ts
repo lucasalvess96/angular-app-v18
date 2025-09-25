@@ -23,16 +23,11 @@ export class PersonService {
   }
 
   list(): Observable<Person[]> {
-    return this.httpClient.get<Person[]>(`${this.baseUrl}/list`).pipe(
-      retry(2),
-      catchError((error) => this.exececaoService.handleError(error)),
-    );
+    return this.httpClient.get<Person[]>(`${this.baseUrl}/list`).pipe(retry(2));
   }
 
   pagination(params: HttpParams): Observable<Paginacao<Person>> {
-    return this.httpClient
-      .get<Paginacao<Person>>(`${this.baseUrl}/pagination`, { params })
-      .pipe(retry(2), catchError(this.exececaoService.handleError));
+    return this.httpClient.get<Paginacao<Person>>(`${this.baseUrl}/pagination`, { params }).pipe(retry(2));
   }
 
   detail(id: number): Observable<Person> {
@@ -50,15 +45,13 @@ export class PersonService {
   }
 
   searchList(name: string): Observable<Person[]> {
-    return this.httpClient
-      .get<Person[]>(`${this.baseUrl}/search/list?name=${name}`)
-      .pipe(retry(2), catchError(this.exececaoService.handleError));
+    return this.httpClient.get<Person[]>(`${this.baseUrl}/search/list?name=${name}`).pipe(retry(2));
   }
 
   searchPagination(name: string, params: HttpParams): Observable<Paginacao<Person>> {
     return this.httpClient
       .get<Paginacao<Person>>(`${this.baseUrl}/search/pagination?name=${name}`, { params })
-      .pipe(retry(2), catchError(this.exececaoService.handleError));
+      .pipe(retry(2));
   }
 
   delete(id: number): Observable<void> {
