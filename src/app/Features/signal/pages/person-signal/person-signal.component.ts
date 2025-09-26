@@ -34,7 +34,7 @@ export class PersonSignalComponent {
   displayedColumns: string[] = ['id', 'name', 'age', 'cpf', 'acoes'];
 
   paginationControl = signal(getDefaultPaginationControl());
-  updatePagination = signal(0);
+  paginationChange = signal(0);
 
   searchTerm = signal('');
 
@@ -45,7 +45,7 @@ export class PersonSignalComponent {
   private readonly personService = inject(PersonService);
 
   dataSource = toSignal(
-    combineLatest([toObservable(this.searchTerm), toObservable(this.updatePagination)]).pipe(
+    combineLatest([toObservable(this.searchTerm), toObservable(this.paginationChange)]).pipe(
       switchMap(([term, _]) => {
         this.loading.set(true);
         return term.trim() ? this.searchPagination(term) : this.fetchPagination();
@@ -73,12 +73,12 @@ export class PersonSignalComponent {
       page: event.pageIndex,
       size: event.pageSize,
     }));
-    this.updatePagination.update((number: number) => number + 1);
+    this.paginationChange.update((number: number) => number + 1);
   }
 
   onSizeChange(size: number): void {
     this.paginationControl.update((pagination: PaginationControl) => ({ ...pagination, size, page: 0 }));
-    this.updatePagination.update((number: number) => number + 1);
+    this.paginationChange.update((number: number) => number + 1);
   }
 
   onSortChange(event: Sort): void {
@@ -87,7 +87,7 @@ export class PersonSignalComponent {
       sort: event.active,
       direction: event.direction || 'asc',
     }));
-    this.updatePagination.update((number: number) => number + 1);
+    this.paginationChange.update((number: number) => number + 1);
   }
 
   //pagination filter
@@ -106,13 +106,13 @@ export class PersonSignalComponent {
   applyFilter(value: string): void {
     this.searchTerm.set(value.trim());
     this.paginationControl.update((pagination: PaginationControl) => ({ ...pagination, page: 0 }));
-    this.updatePagination.update((number: number) => number + 1);
+    this.paginationChange.update((number: number) => number + 1);
   }
 
   clearFilter(input: HTMLInputElement): void {
     input.value = '';
     this.searchTerm.set('');
     this.paginationControl.update((pagination: PaginationControl) => ({ ...pagination, page: 0 }));
-    this.updatePagination.update((number: number) => number + 1);
+    this.paginationChange.update((number: number) => number + 1);
   }
 }
