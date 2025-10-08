@@ -10,6 +10,8 @@ export function getDefaultPaginationControl(): PaginationControl {
     itemsPerPageOptions: PAGINATION_DEFAULT_ITEMS_PER_PAGE_OPTIONS,
     size: PAGINATION_DEFAULT_SIZE,
     page: PAGINATION_DEFAULT_PAGE,
+    sortProperty: 'id',
+    sortOrder: 'desc',
   } as PaginationControl;
 }
 
