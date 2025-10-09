@@ -38,6 +38,7 @@
     [length]="paginationControl.totalElements"
     [pageSizeOptions]="paginationControl.itemsPerPageOptions ?? []"
     (page)="onPageChange($event)"
+    showFirstLastButtons="true"
     aria-label="Selecionar página"
   >
   </mat-paginator>
