@@ -20,11 +20,11 @@
 
   <app-table-component
     *ngIf="dataSource$ | async as data"
-    [dataSource]="data"
     [displayedColumns]="displayedColumns"
+    [dataSource]="data"
+    [paginationControl]="defaultPagination"
     [actions]="actionsTamplate"
     [customTemplates]="{ cpf: cpfCustom }"
-    [paginationControl]="defaultPagination"
     (pageChange)="paginationChange$.next()"
     (sortChange)="paginationChange$.next()"
   />
