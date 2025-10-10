@@ -25,7 +25,7 @@ export class PersonDetailComponent implements OnInit {
   ngOnInit(): void {
     this.person$ = this.route.paramMap.pipe(
       map((params: ParamMap) => params.get('id')),
-      filter((id: string | null): id is string => id !== null),
+      filter((id: string | null) => id !== null),
       switchMap((id: string) => this.personService.detail(+id)),
     );
   }
