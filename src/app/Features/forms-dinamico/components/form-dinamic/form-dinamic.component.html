@@ -1,0 +1,36 @@
+<form *ngIf="formGroup" [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+  <ng-container *ngFor="let field of fields">
+    <ng-container *ngIf="!field.children">
+      <!-- Campo simples -->
+      <mat-form-field>
+        <mat-label>{{ field.label }}</mat-label>
+        <input
+          matInput
+          [type]="'text'"
+          placeholder="{{ field.placeholder }}"
+          [formControlName]="field.name"
+          [mask]="field.mask"
+          autocomplete="off"
+          [dropSpecialCharacters]="true"
+        />
+
+        <mat-error *ngIf="formGroup.get(field.name)?.invalid">
+          <span *ngIf="formGroup.get(field.name)?.errors?.['required']">Campo obrigatório</span>
+          <span *ngIf="formGroup.get(field.name)?.errors?.['pattern']">Formato inválido</span>
+          <span *ngIf="formGroup.get(field.name)?.errors?.['minlength']">Mínimo de caracteres não atingido</span>
+          <span *ngIf="formGroup.get(field.name)?.errors?.['maxlength']">Máximo de caracteres excedido</span>
+        </mat-error>
+      </mat-form-field>
+    </ng-container>
+
+    <!-- Campo aninhado -->
+    <ng-container *ngIf="field.children" [formGroupName]="field.name">
+      <app-form-dinamic [fields]="field.children" [formGroup]="getNestedFormGroup(field.name)" [showActions]="false" />
+    </ng-container>
+  </ng-container>
+
+  <div class="form-actions" *ngIf="showActions">
+    <button mat-flat-button color="warn" type="button">Voltar</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="!formGroup.valid">Salvar</button>
+  </div>
+</form>
