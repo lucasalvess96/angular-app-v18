@@ -35,6 +35,10 @@ export const routes: Routes = [
     loadChildren: () => import('./features/signal/person-signal.routing').then((m) => m.default),
   },
   {
+    path: 'forms',
+    loadChildren: () => import('./features/forms-dinamico/forms-dinamico.routing').then((m) => m.default),
+  },
+  {
     path: 'redirect-page',
     loadComponent: () =>
       import('./features/page-redirect/pages/page-redirect/page-redirect.component').then(
