@@ -76,11 +76,6 @@ export class PersonSignalComponent {
     this.paginationChange.update((number: number) => number + 1);
   }
 
-  onSizeChange(size: number): void {
-    this.paginationControl.update((pagination: PaginationControl) => ({ ...pagination, size, page: 0 }));
-    this.paginationChange.update((number: number) => number + 1);
-  }
-
   onSortChange(event: Sort): void {
     this.paginationControl.update((pagination: PaginationControl) => ({
       ...pagination,
