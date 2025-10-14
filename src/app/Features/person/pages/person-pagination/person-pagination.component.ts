@@ -60,11 +60,7 @@ export class PersonPaginationComponent implements OnInit {
 
   fetchPagination(): Observable<Person[]> {
     return this.personService.pagination(buildPaginationParams(this.defaultPagination)).pipe(
-      tap((response: Paginacao<Person>) => {
-        this.defaultPagination.size = response.size;
-        this.defaultPagination.page = response.number;
-        this.defaultPagination.totalElements = response.totalElements;
-      }),
+      tap((response: Paginacao<Person>) => (this.defaultPagination.totalElements = response.totalElements)),
       map((response: Paginacao<Person>) => response.content),
     );
   }
@@ -72,11 +68,7 @@ export class PersonPaginationComponent implements OnInit {
   //  pagination filter
   searchPagination(term: string): Observable<Person[]> {
     return this.personService.searchPagination(term, buildPaginationParams(this.defaultPagination)).pipe(
-      tap((response: Paginacao<Person>) => {
-        this.defaultPagination.size = response.size;
-        this.defaultPagination.page = response.number;
-        this.defaultPagination.totalElements = response.totalElements;
-      }),
+      tap((response: Paginacao<Person>) => (this.defaultPagination.totalElements = response.totalElements)),
       map((response: Paginacao<Person>) => response.content),
     );
   }
