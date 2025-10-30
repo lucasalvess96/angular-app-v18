@@ -1,8 +1,9 @@
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
-import { provideHttpClient } from '@angular/common/http';
+import { HttpParams, provideHttpClient } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
+import { Paginacao } from '../../../shared/models/paginacao';
 import { Person } from '../models/person';
 import { PersonService } from './person.service';
 
@@ -22,6 +23,10 @@ describe('PersonService', () => {
 
   const baseUrl = 'http://localhost:8080/person-v3';
   const person = { id: 1, name: 'John Doe', age: 30, cpf: '123.456.789-00' } as Person;
+  const persons: Person[] = [
+    { id: 1, name: 'John Doe', age: 30, cpf: '123.456.789-00' },
+    { id: 2, name: 'Jane Smith', age: 25, cpf: '987.654.321-00' },
+  ];
 
   afterEach(() => httpTestingController.verify());
 
@@ -29,28 +34,57 @@ describe('PersonService', () => {
     expect(service).toBeTruthy();
   });
 
-  fit('should create a person', () => {
+  it('should create a person', () => {
     service.create(person).subscribe((response: Person) => expect(response).toEqual(person));
 
     const req = httpTestingController.expectOne(`${baseUrl}/create`);
     expect(req.request.method).toBe('POST');
+    expect(req.request.body).toEqual(person);
     req.flush(person);
   });
 
-  fit('should retry the request until success retry(2)', () => {
-    let result: Person | undefined;
+  it('should emit error when request fails after retries', (done: DoneFn) => {
+    const errorResponse = { status: 500, statusText: 'Error saving information to the database' };
 
-    service.create(person).subscribe((response: Person) => (result = response));
+    service.create(person).subscribe({
+      next: () => fail('expected to fail'),
+      error: (error) => {
+        expect(error).toBeTruthy();
+        done();
+      },
+    });
 
-    const req1 = httpTestingController.expectOne(`${baseUrl}/create`);
-    req1.flush({ message: 'err' }, { status: 500, statusText: 'Server Error' });
+    httpTestingController.expectOne(`${baseUrl}/create`).flush(null, errorResponse);
+    httpTestingController.expectOne(`${baseUrl}/create`).flush(null, errorResponse);
+    httpTestingController.expectOne(`${baseUrl}/create`).flush(null, errorResponse);
+  });
 
-    const req2 = httpTestingController.expectOne(`${baseUrl}/create`);
-    req2.flush({ message: 'err' }, { status: 500, statusText: 'Server Error' });
+  it('should fetch list of persons', () => {
+    service.list().subscribe((response: Person[]) => expect(response).toEqual(persons));
 
-    const req3 = httpTestingController.expectOne(`${baseUrl}/create`);
-    req3.flush(person, { status: 200, statusText: 'OK' });
+    httpTestingController.expectOne(`${baseUrl}/list`).flush(persons);
+  });
 
-    expect(result).toEqual(person);
+  it('should fetch person pagination successfully', () => {
+    const paginationResponse = {
+      content: persons,
+      totalElements: 2,
+      totalPages: 1,
+      size: 10,
+      number: 0,
+    } as Paginacao<Person>;
+
+    const params = new HttpParams();
+
+    service.pagination(params).subscribe((response: Paginacao<Person>) => {
+      expect(response).toEqual(paginationResponse);
+      expect(response.content.length).toBe(2);
+    });
+
+    const req = httpTestingController.expectOne(`${baseUrl}/pagination`);
+    expect(req.request.method).toBe('GET');
+    expect(req.request.params.keys().length).toBe(0);
+
+    req.flush(paginationResponse);
   });
 });
