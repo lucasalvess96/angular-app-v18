@@ -7,7 +7,7 @@ import { Paginacao } from '../../../shared/models/paginacao';
 import { Person } from '../models/person';
 import { PersonService } from './person.service';
 
-fdescribe('PersonService', () => {
+describe('PersonService', () => {
   let service: PersonService;
   let httpTestingController: HttpTestingController;
 
