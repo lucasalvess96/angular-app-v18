@@ -1,4 +1,4 @@
-olhar a aula do maiky brito de redme, installar angular-material
+ng new my-project --ssr
 
 # AngularAppV18
 
