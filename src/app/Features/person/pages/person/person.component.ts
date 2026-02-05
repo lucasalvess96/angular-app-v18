@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, inject, OnInit, ViewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { RouterLink, RouterLinkActive } from '@angular/router';
@@ -36,6 +36,10 @@ export class PersonComponent implements OnInit {
 
   filterInput = new BehaviorSubject<string>('');
 
+  totalElements = 0; // total de registros
+  size = 10; // tamanho da página atual
+  page = 0; // página atual
+
   private readonly personService = inject(PersonService);
   private readonly toastService = inject(ToastrService);
 
@@ -54,8 +58,16 @@ export class PersonComponent implements OnInit {
       switchMap((term: string) => {
         const request$ = term.trim() ? this.personService.searchList(term) : this.personService.list();
         return request$.pipe(
-          map((persons: Person[]) => {
-            const tableData = new MatTableDataSource(persons);
+          map((response: any) => {
+            const persons = response.content ?? response;
+            this.totalElements = response.totalElements ?? persons.length;
+            this.size = response.size ?? 10;
+            this.page = response.number ?? 0;
+            console.log('Total de elementos:', this.totalElements);
+            console.log('Tamanho da página:', this.size);
+            console.log('Página atual:', this.page);
+
+            const tableData = new MatTableDataSource<Person>(persons);
             tableData.paginator = this.paginator;
             tableData.sort = this.sort;
             return tableData;
@@ -66,6 +78,12 @@ export class PersonComponent implements OnInit {
       takeUntilDestroyed(this.destroyRef),
     );
     this.filterInput.next('');
+  }
+
+  onPageChange(event: PageEvent): void {
+    this.page = event.pageIndex;
+    this.size = event.pageSize;
+    this.createDataSource();
   }
 
   applyFilter(value: string): void {
