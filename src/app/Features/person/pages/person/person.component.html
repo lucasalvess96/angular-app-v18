@@ -81,7 +81,15 @@
           </tr>
         </table>
 
-        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+        <mat-paginator
+          [pageSizeOptions]="[5, 10, 25, 100]"
+          [length]="totalElements"
+          [pageSize]="size"
+          [pageIndex]="page"
+          (page)="onPageChange($event)"
+          aria-label="Select page of users"
+          showFirstLastButtons="true"
+        ></mat-paginator>
       </ng-container>
     </div>
   </div>
