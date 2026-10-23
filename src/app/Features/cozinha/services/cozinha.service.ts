@@ -9,7 +9,7 @@ import { Cozinha } from '../models/cozinha';
   providedIn: 'root',
 })
 export class CozinhaService {
-  private readonly baseUrl = 'http://localhost:8080/cozinha';
+  private readonly baseUrl = '/api/cozinhas';
 
   private readonly httpClient = inject(HttpClient);
 
