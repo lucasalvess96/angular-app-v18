@@ -21,7 +21,7 @@ describe('PersonService', () => {
     httpTestingController = TestBed.inject(HttpTestingController);
   });
 
-  const baseUrl = 'http://localhost:8080/person-v3';
+  const baseUrl = '/api/person-v3';
   const person = { id: 1, name: 'John Doe', age: 30, cpf: '123.456.789-00' } as Person;
   const persons: Person[] = [
     { id: 1, name: 'John Doe', age: 30, cpf: '123.456.789-00' },
