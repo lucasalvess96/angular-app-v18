@@ -9,7 +9,7 @@ import { Person } from '../models/person';
   providedIn: 'root',
 })
 export class PersonService {
-  private readonly baseUrl: string = 'http://localhost:8080/person-v3';
+  private readonly baseUrl: string = '/api/person-v3';
 
   private readonly httpClient = inject(HttpClient);
 
@@ -49,9 +49,7 @@ export class PersonService {
   }
 
   searchPagination(name: string, params: HttpParams): Observable<Paginacao<Person>> {
-    return this.httpClient
-      .get<Paginacao<Person>>(`${this.baseUrl}/search/pagination?name=${name}`, { params })
-      .pipe(retry(2));
+    return this.httpClient.get<Paginacao<Person>>(`${this.baseUrl}/search/pagination?name=${name}`, { params }).pipe(retry(2));
   }
 
   delete(id: number): Observable<void> {

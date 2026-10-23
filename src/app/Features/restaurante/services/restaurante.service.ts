@@ -9,7 +9,7 @@ import { Restaurante } from '../models/restaurante';
   providedIn: 'root',
 })
 export class RestauranteService {
-  private readonly baseUrl = 'http://localhost:8080/restaurante';
+  private readonly baseUrl = '/api/restaurantes';
 
   private readonly httpClient = inject(HttpClient);
 
@@ -30,9 +30,10 @@ export class RestauranteService {
   }
 
   search(name: string): Observable<Restaurante[]> {
-    return this.httpClient
-      .get<Restaurante[]>(`${this.baseUrl}/search?nome=${name}`)
-      .pipe(retry(2), catchError(this.exececaoService.handleError));
+    return this.httpClient.get<Restaurante[]>(`${this.baseUrl}/search?nome=${name}`).pipe(
+      retry(2),
+      catchError((error) => this.exececaoService.handleError(error)),
+    );
   }
 
   detail(id: number): Observable<Restaurante> {

@@ -8,7 +8,7 @@ import { Forms } from '../models/forms';
   providedIn: 'root',
 })
 export class FormsService {
-  private readonly baseUrl = 'http://localhost:8080/persoon';
+  private readonly baseUrl = '/api/persoon';
 
   private readonly httpClient = inject(HttpClient);
 
