@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { AuthGuard } from './shared/auth-guard/authGuard';
+import { authGuard } from 'security-auth-ui';
 
 export const routes: Routes = [
   {
@@ -23,7 +23,7 @@ export const routes: Routes = [
   },
   {
     path: 'restaurantes',
-    canActivate: [AuthGuard],
+    canActivate: [authGuard],
     loadChildren: () => import('./features/restaurante/restaurante.routing').then((m) => m.default),
   },
   {
@@ -37,6 +37,10 @@ export const routes: Routes = [
   {
     path: 'forms',
     loadChildren: () => import('./features/forms-dinamico/forms-dinamico.routing').then((m) => m.default),
+  },
+  {
+    path: 'form-test',
+    loadChildren: () => import('./features/form-test/form-field.routing').then((m) => m.default),
   },
   {
     path: 'redirect-page',
