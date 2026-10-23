@@ -1,0 +1,121 @@
+<form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+  <ng-container *ngFor="let field of fields" [ngSwitch]="field.type">
+    <!-- Campo simples -->
+    <mat-form-field *ngSwitchCase="fieldType.Text" appearance="outline">
+      <mat-label>{{ field.label }}</mat-label>
+      <input
+        matInput
+        [formControlName]="field.name"
+        [placeholder]="field.placeholder || field.label"
+        [mask]="field.mask"
+      />
+
+      <mat-error *ngIf="getErrorMessage(field)">
+        <span> {{ getErrorMessage(field) }}</span>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field *ngSwitchCase="fieldType.Number" appearance="outline">
+      <mat-label>{{ field.label }}</mat-label>
+      <input
+        matInput
+        type="number"
+        [formControlName]="field.name"
+        [placeholder]="field.placeholder || field.label"
+        [mask]="field.mask"
+      />
+
+      <mat-error *ngIf="getErrorMessage(field)">
+        <span> {{ getErrorMessage(field) }}</span>
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Grupo -->
+    <div *ngSwitchCase="fieldType.Group" [formGroupName]="field.name">
+      <h3>{{ field.label }}</h3>
+      <ng-container *ngFor="let child of field.children" [ngSwitch]="child.type">
+        <!-- Campos do grupo -->
+        <mat-form-field *ngSwitchCase="fieldType.Text" appearance="outline">
+          <mat-label>{{ child.label }}</mat-label>
+          <input
+            matInput
+            [formControlName]="child.name"
+            [placeholder]="child.placeholder || child.label"
+            [mask]="child.mask"
+          />
+
+          <mat-error *ngIf="getErrorMessage(child)">
+            <span> {{ getErrorMessage(child) }}</span>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field *ngSwitchCase="fieldType.Number" appearance="outline">
+          <mat-label>{{ child.label }}</mat-label>
+          <input
+            matInput
+            type="number"
+            [formControlName]="child.name"
+            [placeholder]="child.placeholder || child.label"
+            [mask]="child.mask"
+          />
+
+          <mat-error *ngIf="getErrorMessage(child)">
+            <span> {{ getErrorMessage(child) }}</span>
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Se o grupo tiver subgrupo -->
+        <div *ngSwitchCase="fieldType.Group" [formGroupName]="child.name">
+          <h4>{{ child.label }}</h4>
+          <ng-container *ngFor="let sub of child.children" [ngSwitch]="sub.type">
+            <mat-form-field *ngSwitchCase="fieldType.Text" appearance="outline">
+              <mat-label>{{ sub.label }}</mat-label>
+              <input
+                matInput
+                [formControlName]="sub.name"
+                [placeholder]="sub.placeholder || sub.label"
+                [mask]="sub.mask"
+              />
+
+              <mat-error *ngIf="getErrorMessage(sub)">
+                <span> {{ getErrorMessage(sub) }}</span>
+              </mat-error>
+            </mat-form-field>
+          </ng-container>
+        </div>
+      </ng-container>
+    </div>
+
+    <!-- Array -->
+    <div *ngSwitchCase="fieldType.Array" formArrayName="{{ field.name }}">
+      <h3>{{ field.label }}</h3>
+      <button mat-button type="button" (click)="addItem(field)">Adicionar</button>
+      <div *ngFor="let item of getFormArray(field.name).controls; let i = index" [formGroupName]="i">
+        <ng-container *ngFor="let child of field.children" [ngSwitch]="child.type">
+          <mat-form-field *ngSwitchCase="fieldType.Text" appearance="outline">
+            <mat-label>{{ child.label }}</mat-label>
+            <input
+              matInput
+              [formControlName]="child.name"
+              [placeholder]="child.placeholder || child.label"
+              [mask]="child.mask"
+            />
+          </mat-form-field>
+
+          <mat-form-field *ngSwitchCase="fieldType.Number" appearance="outline">
+            <mat-label>{{ child.label }}</mat-label>
+            <input
+              matInput
+              type="number"
+              [formControlName]="child.name"
+              [placeholder]="child.placeholder || child.label"
+              [mask]="child.mask"
+            />
+          </mat-form-field>
+        </ng-container>
+      </div>
+    </div>
+  </ng-container>
+
+  <button mat-raised-button color="primary" type="submit" [disabled]="!formGroup.valid">Salvar</button>
+</form>

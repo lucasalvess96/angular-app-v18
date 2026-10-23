@@ -1,0 +1,16 @@
+<p>form-dinamic-test works!</p>
+
+<app-form-field [fields]="formFields" (save)="submitForm($event)"></app-form-field>
+
+<button
+  mat-raised-button
+  color="accent"
+  [routerLink]="['../welcome']"
+  routerLinkActive="active"
+  ariaCurrentWhenActive="page"
+  [style.margin-left.rem]="1"
+  [style.margin-top.rem]="1"
+>
+  <mat-icon>arrow_back</mat-icon>
+  Home
+</button>
