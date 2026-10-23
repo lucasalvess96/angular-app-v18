@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { RouterOutlet } from '@angular/router';
-import { getPortuguesePaginatorIntl } from './shared/constants/portuguesePaginatorIntl';
+import { getPortuguesePaginatorIntl } from './shared/constants/portuguesePaginatorIntl.constants';
 
 @Component({
   selector: 'app-root',

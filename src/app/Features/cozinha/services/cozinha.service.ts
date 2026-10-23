@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { catchError, Observable, retry } from 'rxjs';
-import { Paginacao } from '../../../shared/models/paginacao';
+import { Paginacao } from '../../../shared/models/paginacao.models';
 import { ExcecaoService } from '../../../shared/services/exception/excecao.service';
 import { Cozinha } from '../models/cozinha';
 

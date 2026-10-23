@@ -1,5 +1,5 @@
 import { HttpParams } from '@angular/common/http';
-import { PaginationControl } from '../models/controlePaginacao';
+import { PaginationControl } from '../models/controlePaginacao.models';
 
 export const PAGINATION_DEFAULT_ITEMS_PER_PAGE_OPTIONS = [5, 10, 20, 50, 100];
 export const PAGINATION_DEFAULT_SIZE = 10;

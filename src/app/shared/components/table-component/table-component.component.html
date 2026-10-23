@@ -17,9 +17,7 @@
         </ng-template>
 
         <ng-template #actionTemplate>
-          <ng-container
-            *ngTemplateOutlet="actions ? actions : defaultActions; context: { $implicit: row }"
-          ></ng-container>
+          <ng-container *ngTemplateOutlet="actions ? actions : defaultActions; context: { $implicit: row }"></ng-container>
         </ng-template>
       </td>
     </ng-container>

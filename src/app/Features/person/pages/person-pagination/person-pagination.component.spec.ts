@@ -8,7 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { provideRouter } from '@angular/router';
 import { ToastrModule } from 'ngx-toastr';
 import { of } from 'rxjs';
-import { Paginacao } from '../../../../shared/models/paginacao';
+import { Paginacao } from '../../../../shared/models/paginacao.models';
 import { Person } from '../../models/person';
 import { PersonService } from '../../services/person.service';
 import { PersonPaginationComponent } from './person-pagination.component';

@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { HttpParams, provideHttpClient } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
-import { Paginacao } from '../../../shared/models/paginacao';
+import { Paginacao } from '../../../shared/models/paginacao.models';
 import { Person } from '../models/person';
 import { PersonService } from './person.service';
 

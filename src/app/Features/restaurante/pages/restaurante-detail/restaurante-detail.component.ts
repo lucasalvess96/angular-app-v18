@@ -4,7 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, ParamMap, RouterLink, RouterLinkActive } from '@angular/router';
 import { filter, map, Observable, switchMap } from 'rxjs';
 import { materialModules } from '../../../../shared/angular-material/material-modules';
-import { parseBrDate } from '../../../../shared/constants/formatar-datas';
+import { parseBrDate } from '../../../../shared/constants/formatar-datas.constants';
 import { Restaurante } from '../../models/restaurante';
 import { RestauranteService } from '../../services/restaurante.service';
 

@@ -16,8 +16,8 @@ import {
 import { materialModules } from '../../../../shared/angular-material/material-modules';
 import { SpinnerComponentComponent } from '../../../../shared/components/spinner-component/spinner-component.component';
 import { TableComponentComponent } from '../../../../shared/components/table-component/table-component.component';
-import { buildPaginationParams, getDefaultPaginationControl } from '../../../../shared/constants/pagination';
-import { Paginacao } from '../../../../shared/models/paginacao';
+import { buildPaginationParams, getDefaultPaginationControl } from '../../../../shared/constants/paginacao.constants';
+import { Paginacao } from '../../../../shared/models/paginacao.models';
 import { Cozinha } from '../../models/cozinha';
 import { CozinhaService } from '../../services/cozinha.service';
 

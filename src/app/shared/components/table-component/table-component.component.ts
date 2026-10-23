@@ -4,7 +4,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { materialModules } from '../../angular-material/material-modules';
-import { PaginationControl, SortOrder } from '../../models/controlePaginacao';
+import { PaginationControl, SortOrder } from '../../models/controlePaginacao.models';
 
 @Component({
   selector: 'app-table-component',

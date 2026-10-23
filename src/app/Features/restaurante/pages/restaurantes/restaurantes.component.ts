@@ -16,9 +16,9 @@ import {
 import { materialModules } from '../../../../shared/angular-material/material-modules';
 import { SpinnerComponentComponent } from '../../../../shared/components/spinner-component/spinner-component.component';
 import { TableComponentComponent } from '../../../../shared/components/table-component/table-component.component';
-import { parseBrDate } from '../../../../shared/constants/formatar-datas';
-import { buildPaginationParams, getDefaultPaginationControl } from '../../../../shared/constants/pagination';
-import { Paginacao } from '../../../../shared/models/paginacao';
+import { parseBrDate } from '../../../../shared/constants/formatar-datas.constants';
+import { buildPaginationParams, getDefaultPaginationControl } from '../../../../shared/constants/paginacao.constants';
+import { Paginacao } from '../../../../shared/models/paginacao.models';
 import { Restaurante } from '../../models/restaurante';
 import { RestauranteService } from '../../services/restaurante.service';
 

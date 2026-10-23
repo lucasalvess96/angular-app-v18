@@ -6,8 +6,8 @@ import { BehaviorSubject, combineLatest, finalize, map, Observable, switchMap, t
 import { materialModules } from '../../../../shared/angular-material/material-modules';
 import { SpinnerComponentComponent } from '../../../../shared/components/spinner-component/spinner-component.component';
 import { TableComponentComponent } from '../../../../shared/components/table-component/table-component.component';
-import { buildPaginationParams, getDefaultPaginationControl } from '../../../../shared/constants/pagination';
-import { Paginacao } from '../../../../shared/models/paginacao';
+import { buildPaginationParams, getDefaultPaginationControl } from '../../../../shared/constants/paginacao.constants';
+import { Paginacao } from '../../../../shared/models/paginacao.models';
 import { CpfMaskPipe } from '../../../../shared/pipes/cpf/cpf-mask.pipe';
 import { Person } from '../../models/person';
 import { PersonService } from '../../services/person.service';
@@ -51,9 +51,7 @@ export class PersonPaginationComponent implements OnInit {
     return combineLatest([this.paginationChange$, this.searchTerm$]).pipe(
       switchMap(([_, term]) => {
         tap(() => (this.loading = true));
-        return (term.trim() ? this.searchPagination(term) : this.fetchPagination()).pipe(
-          finalize(() => (this.loading = false)),
-        );
+        return (term.trim() ? this.searchPagination(term) : this.fetchPagination()).pipe(finalize(() => (this.loading = false)));
       }),
     );
   }
