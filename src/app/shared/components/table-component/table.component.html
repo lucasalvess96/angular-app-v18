@@ -1,0 +1,49 @@
+<div class="mat-elevation-z8">
+  <table
+    mat-table
+    [dataSource]="dataSource"
+    matSort
+    [matSortActive]="sortActive"
+    [matSortDirection]="sortDirection"
+    (matSortChange)="onSortChange($event)"
+    aria-label="Lista de registros"
+  >
+    <ng-container *ngFor="let column of tableColumns; trackBy: trackColumn" [matColumnDef]="column.key">
+      <th mat-header-cell *matHeaderCellDef [mat-sort-header]="column.sortProperty || column.key" [disabled]="!column.sortable">
+        {{ column.header }}
+      </th>
+      <td mat-cell *matCellDef="let row">
+        <ng-container *ngIf="customTemplates[column.key]; else defaultCell">
+          <ng-container *ngTemplateOutlet="customTemplates[column.key]; context: { $implicit: row }"></ng-container>
+        </ng-container>
+        <ng-template #defaultCell>
+          <ng-container *ngIf="column.key !== 'acoes'; else actionCell">{{ cellValue(row, column.key) }}</ng-container>
+        </ng-template>
+        <ng-template #actionCell>
+          <ng-container
+            *ngIf="actions"
+            [ngTemplateOutlet]="actions"
+            [ngTemplateOutletContext]="{ $implicit: row }"
+          ></ng-container>
+        </ng-template>
+      </td>
+    </ng-container>
+
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell" [attr.colspan]="columnKeys.length">Nenhum dado dispon?vel.</td>
+    </tr>
+
+    <tr mat-header-row *matHeaderRowDef="columnKeys"></tr>
+    <tr mat-row *matRowDef="let row; columns: columnKeys"></tr>
+  </table>
+  <mat-paginator
+    [pageIndex]="paginationControl.page"
+    [pageSize]="paginationControl.size"
+    [length]="paginationControl.totalElements"
+    [pageSizeOptions]="paginationControl.itemsPerPageOptions"
+    (page)="onPageChange($event)"
+    [showFirstLastButtons]="true"
+    aria-label="Selecionar p?gina"
+  >
+  </mat-paginator>
+</div>
