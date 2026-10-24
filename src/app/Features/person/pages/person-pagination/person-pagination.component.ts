@@ -1,84 +1,59 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { Component, inject } from '@angular/core';
+import { PageEvent } from '@angular/material/paginator';
+import { Sort } from '@angular/material/sort';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { BehaviorSubject, combineLatest, finalize, map, Observable, switchMap, tap } from 'rxjs';
 import { materialModules } from '../../../../shared/angular-material/material-modules';
 import { SpinnerComponentComponent } from '../../../../shared/components/spinner-component/spinner-component.component';
-import { TableComponentComponent } from '../../../../shared/components/table-component/table-component.component';
-import { buildPaginationParams, getDefaultPaginationControl } from '../../../../shared/constants/paginacao.constants';
-import { Paginacao } from '../../../../shared/models/paginacao.models';
+import { TableComponent } from '../../../../shared/components/table-component/table.component';
+import { TableColumn } from '../../../../shared/models/table-column.model';
+import { PaginatedListController } from '../../../../shared/pagination/paginated-list.controller';
 import { CpfMaskPipe } from '../../../../shared/pipes/cpf/cpf-mask.pipe';
+import { createInitialPageRequest } from '../../../../shared/utils/pagination.utils';
 import { Person } from '../../models/person';
+import { PersonQuery } from '../../models/person-query.model';
 import { PersonService } from '../../services/person.service';
 
 @Component({
   selector: 'app-person-pagination',
   standalone: true,
-  imports: [
-    RouterLink,
-    RouterLinkActive,
-    materialModules,
-    CommonModule,
-    ReactiveFormsModule,
-    CpfMaskPipe,
-    TableComponentComponent,
-    SpinnerComponentComponent,
-  ],
+  imports: [CommonModule, RouterLink, RouterLinkActive, materialModules, CpfMaskPipe, TableComponent, SpinnerComponentComponent],
   templateUrl: './person-pagination.component.html',
   styleUrl: './person-pagination.component.scss',
 })
-export class PersonPaginationComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'name', 'age', 'cpf', 'acoes'];
-  dataSource$!: Observable<Person[]>;
-
-  defaultPagination = getDefaultPaginationControl();
-  paginationChange$ = new BehaviorSubject<void>(undefined);
-
-  searchTerm$ = new BehaviorSubject<string>('');
-
-  loading = false;
-
-  message = 'Carregando informações...';
-
+export class PersonPaginationComponent {
+  readonly columns: TableColumn[] = [
+    { key: 'id', header: 'ID', sortable: true },
+    { key: 'name', header: 'Nome', sortable: true },
+    { key: 'age', header: 'Idade', sortable: true },
+    { key: 'cpf', header: 'CPF', sortable: true },
+    { key: 'acoes', header: 'Ações', sortable: false },
+  ];
+  readonly message = 'Carregando informações...';
   private readonly personService = inject(PersonService);
 
-  ngOnInit(): void {
-    this.dataSource$ = this.createDataSource();
+  private readonly listing = new PaginatedListController<Person, PersonQuery>({
+    initialQuery: { ...createInitialPageRequest(), name: '' },
+    load: (query) => this.personService.getPersons(query),
+    errorMessage: 'Não foi possível carregar os dados. Tente novamente.',
+  });
+
+  readonly viewModel$ = this.listing.viewModel$;
+
+  onPageChange(event: PageEvent): void {
+    this.listing.changePage(event.pageIndex, event.pageSize);
   }
 
-  createDataSource(): Observable<Person[]> {
-    return combineLatest([this.paginationChange$, this.searchTerm$]).pipe(
-      switchMap(([_, term]) => {
-        tap(() => (this.loading = true));
-        return (term.trim() ? this.searchPagination(term) : this.fetchPagination()).pipe(finalize(() => (this.loading = false)));
-      }),
-    );
+  onSortChange(event: Sort): void {
+    if (!this.columns.some((column) => column.sortable && (column.sortProperty || column.key) === event.active)) return;
+    this.listing.changeSort(event.active, event.direction);
   }
 
-  fetchPagination(): Observable<Person[]> {
-    return this.personService.pagination(buildPaginationParams(this.defaultPagination)).pipe(
-      tap((response: Paginacao<Person>) => (this.defaultPagination.totalElements = response.totalElements)),
-      map((response: Paginacao<Person>) => response.content),
-    );
+  onSearch(term: string): void {
+    this.listing.updateQuery({ name: term.trim(), page: 0 });
   }
 
-  //  pagination filter
-  searchPagination(term: string): Observable<Person[]> {
-    return this.personService.searchPagination(term, buildPaginationParams(this.defaultPagination)).pipe(
-      tap((response: Paginacao<Person>) => (this.defaultPagination.totalElements = response.totalElements)),
-      map((response: Paginacao<Person>) => response.content),
-    );
-  }
-
-  applyFilter(term: string): void {
-    this.searchTerm$.next(term.trim());
-    this.paginationChange$.next();
-  }
-
-  clearFilter(input: HTMLInputElement): void {
-    input.value = '';
-    this.searchTerm$.next('');
-    this.paginationChange$.next();
+  onClearSearch(): void {
+    this.onSearch('');
   }
 }

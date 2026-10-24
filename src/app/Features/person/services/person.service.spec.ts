@@ -1,9 +1,10 @@
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
 import { HttpParams, provideHttpClient } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
-import { Paginacao } from '../../../shared/models/paginacao.models';
+import { PageResponse } from '../../../shared/models/page-response.model';
 import { Person } from '../models/person';
 import { PersonService } from './person.service';
 
@@ -13,7 +14,7 @@ describe('PersonService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ToastrModule.forRoot()],
+      imports: [ToastrModule.forRoot(), NoopAnimationsModule],
       providers: [provideHttpClient(), provideHttpClientTesting()],
     });
 
@@ -33,7 +34,7 @@ describe('PersonService', () => {
     totalPages: 1,
     size: 10,
     number: 0,
-  } as Paginacao<Person>;
+  } as PageResponse<Person>;
   const params = new HttpParams();
 
   afterEach(() => httpTestingController.verify());
@@ -74,7 +75,7 @@ describe('PersonService', () => {
   });
 
   it('should fetch person pagination successfully', () => {
-    service.pagination(params).subscribe((response: Paginacao<Person>) => {
+    service.pagination(params).subscribe((response: PageResponse<Person>) => {
       expect(response).toEqual(paginationResponse);
       expect(response.content.length).toBe(2);
     });
@@ -147,13 +148,13 @@ describe('PersonService', () => {
   it('should search person pagination by name successfully', () => {
     const name = 'John';
 
-    service.searchPagination(name, params).subscribe((response: Paginacao<Person>) => {
+    service.searchPagination(name, params).subscribe((response: PageResponse<Person>) => {
       expect(response).toEqual(paginationResponse);
       expect(response.content.length).toBe(2);
     });
     const req = httpTestingController.expectOne(`${baseUrl}/search/pagination?name=${name}`);
     expect(req.request.method).toBe('GET');
-    expect(req.request.params.keys().length).toBe(0);
+    expect(req.request.params.get('name')).toBe(name);
     req.flush(paginationResponse);
   });
 
